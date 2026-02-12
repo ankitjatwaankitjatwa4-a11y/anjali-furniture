@@ -12,7 +12,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
   <style>
-    /* core styles – exactly as original, fixed missing line-clamp utility */
+    /* core styles */
     body { box-sizing: border-box; }
     * { font-family: 'Poppins', sans-serif; }
     .heading-font { font-family: 'Playfair Display', serif; }
@@ -43,12 +43,91 @@
       0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
       50% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
     }
-    /* manual line-clamp for browsers without support */
     .line-clamp-2 {
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+    /* slideshow styles */
+    .slideshow-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .slide-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .slide-img.active {
+      display: block;
+    }
+    .slide-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    .slide-btn:hover { background: rgba(0,0,0,0.8); }
+    .prev { left: 6px; }
+    .next { right: 6px; }
+    .dot-container {
+      position: absolute;
+      bottom: 6px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      z-index: 10;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .dot.active { background: white; transform: scale(1.2); }
+    .gallery-preview-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .gallery-thumb {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+      overflow: hidden;
+    }
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .delivery-note {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
     }
   </style>
   <style>@view-transition { navigation: auto; }</style>
@@ -75,7 +154,7 @@
               <p id="header-tagline" class="text-amber-200 mt-1">Quality Handcrafted Wooden Furniture Since 1995</p>
             </div>
             <div class="flex items-center gap-4">
-              <button onclick="showAdminLogin()" class="bg-amber-800 hover:bg-amber-900 px-4 py-2 rounded-lg text-sm transition-colors"> 🔐 Admin </button>
+              <button onclick="showSignInPage()" class="bg-amber-800 hover:bg-amber-900 px-4 py-2 rounded-lg text-sm transition-colors"> 🔐 Admin Sign In </button>
             </div>
           </div>
         </div>
@@ -93,13 +172,17 @@
         </div>
       </section>
 
-      <!-- Contact Info Bar – PHONE NUMBER UPDATED to 8386076109 -->
+      <!-- Contact Info Bar – PHONE NUMBER UPDATED to 8386076107, OWNER NAME Dhanraj Jagid -->
       <section class="bg-amber-900 text-white py-4 px-4">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-center items-center gap-6 text-sm">
-          <a href="tel:8386076109" class="flex items-center gap-2 hover:text-amber-200"> 📞 8386076109 </a>
+          <a href="tel:8386076107" class="flex items-center gap-2 hover:text-amber-200"> 📞 8386076107 </a>
           <a href="tel:8386020815" class="flex items-center gap-2 hover:text-amber-200"> 📞 8386020815 </a>
-          <a href="https://wa.me/918386076109" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-green-300"> 💬 WhatsApp </a>
+          <a href="https://wa.me/918386076107" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-green-300"> 💬 WhatsApp </a>
           <span class="flex items-center gap-2"> 📍 Metrocity, Mansarovar, Jaipur </span>
+        </div>
+        <!-- BILINGUAL DELIVERY NOTE - Added as per request -->
+        <div class="max-w-7xl mx-auto mt-3 delivery-note text-amber-900">
+          <span class="font-semibold">🚚 डिलीवरी केवल जयपुर में | Delivery only in Jaipur</span>
         </div>
       </section>
 
@@ -117,7 +200,7 @@
         </div>
       </section>
 
-      <!-- Products Gallery -->
+      <!-- Products Gallery with Slideshow -->
       <section id="products" class="py-12 px-4">
         <div class="max-w-7xl mx-auto">
           <h2 class="heading-font text-3xl font-bold text-center text-amber-900 mb-8">Our Furniture Collection</h2>
@@ -226,7 +309,7 @@
         </div>
       </section>
 
-      <!-- Footer – PHONE UPDATED to 8386076109 -->
+      <!-- Footer – PHONE UPDATED to 8386076107, OWNER NAME Dhanraj Jagid -->
       <footer class="bg-amber-900 text-white py-8 px-4">
         <div class="max-w-7xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -236,7 +319,11 @@
             </div>
             <div>
               <h3 class="heading-font text-xl font-bold mb-4">📞 Contact Us</h3>
-              <p class="text-amber-200"><span id="footer-owner">Dhanraj Jagid</span><br><a href="tel:8386076109" class="hover:text-white">📱 8386076109</a><br><a href="tel:8386020815" class="hover:text-white">📱 8386020815</a></p>
+              <p class="text-amber-200"><span id="footer-owner">Dhanraj Jagid</span><br><a href="tel:8386076107" class="hover:text-white">📱 8386076107</a><br><a href="tel:8386020815" class="hover:text-white">📱 8386020815</a></p>
+              <!-- Bilingual delivery note in footer for emphasis -->
+              <div class="mt-3 text-xs text-amber-300 border-t border-amber-700 pt-2">
+                🚚 डिलीवरी केवल जयपुर में | Delivery only in Jaipur
+              </div>
             </div>
             <div>
               <h3 class="heading-font text-xl font-bold mb-4">⏰ Working Hours</h3>
@@ -249,11 +336,41 @@
         </div>
       </footer>
 
-      <!-- Floating WhatsApp Button – number updated to 8386076109 -->
-      <a href="https://wa.me/918386076109?text=Hello! I'm interested in your furniture. Please share more details." target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 whatsapp-btn w-16 h-16 rounded-full flex items-center justify-center text-white text-3xl shadow-lg z-40 hover:scale-110 transition-transform"> 💬 </a>
+      <!-- Floating WhatsApp Button – number updated to 8386076107 -->
+      <a href="https://wa.me/918386076107?text=Hello! I'm interested in your furniture. Please share more details." target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 whatsapp-btn w-16 h-16 rounded-full flex items-center justify-center text-white text-3xl shadow-lg z-40 hover:scale-110 transition-transform"> 💬 </a>
     </div>
 
-    <!-- ADMIN LOGIN MODAL -->
+    <!-- ========== DEDICATED SIGN IN PAGE (Phone + Security Code) ========== -->
+    <div id="signin-page" class="hidden fixed inset-0 bg-amber-50 z-50 overflow-auto">
+      <div class="min-h-full flex items-center justify-center py-12 px-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
+          <button onclick="hideSignInPage()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">×</button>
+          <div class="text-center mb-6">
+            <div class="text-5xl mb-2">🔐</div>
+            <h2 class="heading-font text-3xl font-bold text-amber-900">Admin Sign In</h2>
+            <p class="text-gray-600 mt-1">Enter your registered phone & security code</p>
+          </div>
+          <form id="signin-form" class="space-y-5">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">📱 Admin Phone Number</label>
+              <input type="tel" id="signin-phone" value="8386076107" readonly class="w-full px-4 py-3 bg-gray-100 border-2 border-amber-200 rounded-lg text-gray-700 font-medium">
+              <p class="text-xs text-gray-500 mt-1">Use registered admin number</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">🔑 Security Code</label>
+              <input type="password" id="signin-code" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="Enter code">
+            </div>
+            <div id="signin-error" class="hidden text-red-600 text-sm text-center"></div>
+            <button type="submit" id="signin-btn" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-lg font-semibold text-lg transition-colors"> ➤ Verify & Continue </button>
+          </form>
+          <div class="mt-6 text-center text-sm text-gray-500">
+            ⚠️ Only authorized personnel. Code required.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN LOGIN MODAL (email/password + SETUP SECTION) -->
     <div id="admin-login-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-fade relative">
         <h2 class="heading-font text-2xl font-bold text-center text-amber-900 mb-6">🔐 Admin Login</h2>
@@ -269,15 +386,18 @@
           <div id="login-error" class="hidden text-red-600 text-sm text-center"></div>
           <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold transition-colors"> Login </button>
         </form>
-        <div id="setup-section" class="hidden mt-6 pt-6 border-t border-gray-200">
+        
+        <!-- SETUP SECTION – RESTORED (First time admin account creation) -->
+        <div id="setup-section" class="mt-6 pt-6 border-t border-gray-200">
           <p class="text-sm text-gray-600 text-center mb-4">First time? Set up admin credentials:</p>
-          <button onclick="showSetupForm()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-lg font-medium transition-colors"> Setup Admin Account </button>
+          <button onclick="showSetupForm()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-lg font-medium transition-colors"> ⚙️ Setup Admin Account </button>
         </div>
+        
         <button onclick="hideAdminLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">×</button>
       </div>
     </div>
 
-    <!-- ADMIN SETUP MODAL -->
+    <!-- ADMIN SETUP MODAL (for creating email/password) -->
     <div id="admin-setup-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-fade relative">
         <h2 class="heading-font text-2xl font-bold text-center text-amber-900 mb-6">⚙️ Setup Admin Account</h2>
@@ -347,7 +467,7 @@
         </div>
       </div>
 
-      <!-- Add Product Tab – MODIFIED: Gallery upload from local device -->
+      <!-- Add Product Tab – MULTIPLE PHOTO UPLOAD (Gallery) -->
       <div id="tab-add" class="admin-content hidden max-w-3xl mx-auto py-8 px-4">
         <div class="bg-white rounded-2xl shadow-lg p-8">
           <h2 class="text-2xl font-bold text-amber-900 mb-6">Add New Product</h2>
@@ -387,16 +507,13 @@
               </div>
             </div>
             
-            <!-- REPLACED: Image URL input with file upload & preview (gallery upload) -->
+            <!-- MULTIPLE IMAGES UPLOAD -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Product Image (Upload from Gallery)</label>
-              <input type="file" id="product-image-file" accept="image/*" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none bg-white">
-              <p class="text-xs text-gray-500 mt-1">Select an image from your device. Maximum size 5MB.</p>
-              <div id="image-preview-container" class="mt-2 hidden">
-                <img id="image-preview" src="#" alt="Preview" class="max-h-40 rounded-lg border border-amber-200">
-              </div>
-              <!-- Hidden field to store base64 data URL -->
-              <input type="hidden" id="product-image-base64">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Product Images (Upload multiple)</label>
+              <input type="file" id="product-image-files" accept="image/*" multiple class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none bg-white">
+              <p class="text-xs text-gray-500 mt-1">Select multiple images. First image will be cover. Max 5MB each.</p>
+              <div id="multi-preview-container" class="gallery-preview-grid mt-3"></div>
+              <input type="hidden" id="product-images-json">
             </div>
             
             <div>
@@ -418,16 +535,12 @@
 
   <script>
     // ---------- FULLY FUNCTIONAL SIMULATED DATA & SDK ----------
-    // The original code expects /_sdk/data_sdk.js and element_sdk.js
-    // We provide complete in-memory implementation, preserving all original logic.
-
-    // ========== POLYFILL / DUMMY SDK – Fully functional ==========
     window.elementSdk = (function() {
       let configListeners = [];
       let currentConfig = {
         shop_name: 'Anjali Furniture Works',
         tagline: 'Quality Handcrafted Wooden Furniture Since 1995',
-        owner_name: 'Dhanraj Jagid',
+        owner_name: 'Dhanraj Jagid',  // UPDATED OWNER NAME
         primary_color: '#92400e',
         secondary_color: '#78350f',
         accent_color: '#d97706',
@@ -436,10 +549,7 @@
       };
       return {
         init: (opts) => { 
-          if (opts.onConfigChange) {
-            configListeners.push(opts.onConfigChange);
-          }
-          // apply default config mapping
+          if (opts.onConfigChange) configListeners.push(opts.onConfigChange);
           if (opts.mapToCapabilities) opts.mapToCapabilities(currentConfig);
           if (opts.mapToEditPanelValues) opts.mapToEditPanelValues(currentConfig);
         },
@@ -453,16 +563,10 @@
     })();
 
     window.dataSdk = (function() {
-      // In-memory data store
       let records = [];
-      let nextId = 1;
       let handler = null;
-
-      // Seed some demo products & admin (if none)
       function seedData() {
-        // add sample products only if empty
         if (records.length === 0) {
-          // add demo products for instant visual
           records.push({
             __backendId: 'p1',
             type: 'product',
@@ -470,7 +574,7 @@
             category: 'bed',
             wood_type: 'Sheesham',
             price: '32,000',
-            image_url: '',
+            images: [],
             description: 'King size bed with storage, termite resistant',
             customer_name: '', customer_phone: '', customer_message: '',
             created_at: new Date().toISOString()
@@ -482,7 +586,7 @@
             category: 'wardrobe',
             wood_type: 'Teak',
             price: '45,000',
-            image_url: '',
+            images: [],
             description: 'Premium teak wood wardrobe with mirrors',
             customer_name: '', customer_phone: '', customer_message: '',
             created_at: new Date().toISOString()
@@ -494,24 +598,16 @@
             category: 'almirah',
             wood_type: 'Sal',
             price: '28,500',
-            image_url: '',
+            images: [],
             description: 'Heavy duty sal wood frame, 3 drawers',
             customer_name: '', customer_phone: '', customer_message: '',
             created_at: new Date().toISOString()
           });
-          // No admin initially – first time setup will work
         }
       }
       seedData();
-
       return {
-        init: async (h) => { 
-          handler = h; 
-          if (handler && handler.onDataChanged) {
-            handler.onDataChanged(records.slice());
-          }
-          return { isOk: true }; 
-        },
+        init: async (h) => { handler = h; if (handler?.onDataChanged) handler.onDataChanged(records.slice()); return { isOk: true }; },
         create: async (data) => {
           const id = 'id_' + Date.now() + '_' + Math.random().toString(36);
           const newRecord = { __backendId: id, ...data };
@@ -530,12 +626,9 @@
           if (handler) handler.onDataChanged(records.slice());
           return { isOk: true };
         },
-        // for internal use
         _getRecords: () => records.slice()
       };
     })();
-
-    // ---------- END OF FAKE SDK ----------
 
     // ---------- GLOBAL STATE ----------
     const defaultConfig = {
@@ -557,10 +650,11 @@
     let isLoggedIn = false;
     let currentFilter = 'all';
 
-    // PHONE UPDATED to 8386076109
-    const WHATSAPP_NUMBER = '918386076109';
+    // UPDATED: Phone number changed to 8386076107, WhatsApp number updated
+    const WHATSAPP_NUMBER = '918386076107';
+    const ADMIN_PHONE = '8386076107';
+    const SECURITY_CODE = 'ANKITJATWA@123';
 
-    // Data handler from SDK
     const dataHandler = {
       onDataChanged(data) {
         allData = data;
@@ -568,16 +662,13 @@
         inquiries = data.filter(d => d.type === 'inquiry');
         const adminData = data.find(d => d.type === 'admin_credentials');
         adminCredentials = adminData || null;
-        
-        // critical: update UI
         renderProducts();
         renderAdminProducts();
         renderInquiries();
-        updateSetupVisibility();
       }
     };
 
-    // ---------- INITIALIZATION ----------
+    // ---------- INIT ----------
     async function initApp() {
       if (window.elementSdk) {
         window.elementSdk.init({
@@ -593,12 +684,8 @@
       if (window.dataSdk) {
         await window.dataSdk.init(dataHandler);
       }
-      // Hide loading, show customer view
       document.getElementById('loading-screen').classList.add('hidden');
       document.getElementById('customer-view').classList.remove('hidden');
-      
-      // Ensure admin setup visibility correct
-      setTimeout(() => updateSetupVisibility(), 50);
     }
 
     function updateUIFromConfig() {
@@ -610,12 +697,11 @@
       if (footerOwner) footerOwner.textContent = config.owner_name || defaultConfig.owner_name;
     }
 
-    // ---------- RENDER FUNCTIONS (preserved) ----------
+    // ---------- RENDER PRODUCTS WITH SLIDESHOW ----------
     function renderProducts() {
       const grid = document.getElementById('products-grid');
       const noProducts = document.getElementById('no-products');
       if (!grid) return;
-      
       const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
       if (filtered.length === 0) {
         grid.innerHTML = '';
@@ -624,14 +710,21 @@
       }
       noProducts?.classList.add('hidden');
 
-      grid.innerHTML = filtered.map(p => `
+      grid.innerHTML = filtered.map(p => {
+        const images = p.images && Array.isArray(p.images) && p.images.length ? p.images : [];
+        return `
         <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover animate-fade" data-product-id="${p.__backendId}">
           <div class="h-48 bg-gradient-to-br from-amber-200 to-amber-300 flex items-center justify-center relative overflow-hidden">
-            ${p.image_url 
-              ? `<img src="${p.image_url}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                 <div class="absolute inset-0 bg-gradient-to-br from-amber-200 to-amber-300 items-center justify-center text-6xl hidden">${getCategoryEmoji(p.category)}</div>`
-              : `<div class="text-6xl">${getCategoryEmoji(p.category)}</div>`
-            }
+            ${images.length > 0 ? `
+              <div class="slideshow-container w-full h-full" data-product-id="${p.__backendId}">
+                ${images.map((img, idx) => `<img src="${img}" class="slide-img ${idx === 0 ? 'active' : ''}" alt="${p.name}" loading="lazy">`).join('')}
+                <button class="slide-btn prev" onclick="event.stopPropagation(); changeSlide('${p.__backendId}', -1)">❮</button>
+                <button class="slide-btn next" onclick="event.stopPropagation(); changeSlide('${p.__backendId}', 1)">❯</button>
+                <div class="dot-container" id="dots-${p.__backendId}">
+                  ${images.map((_, idx) => `<span class="dot ${idx === 0 ? 'active' : ''}" onclick="event.stopPropagation(); setSlide('${p.__backendId}', ${idx})"></span>`).join('')}
+                </div>
+              </div>
+            ` : `<div class="text-6xl">${getCategoryEmoji(p.category)}</div>`}
           </div>
           <div class="p-4">
             <div class="flex items-center gap-2 mb-2">
@@ -646,106 +739,73 @@
             </div>
           </div>
         </div>
-      `).join('');
+      `}).join('');
     }
 
-    function renderAdminProducts() {
-      const grid = document.getElementById('admin-products-grid');
-      const noProducts = document.getElementById('admin-no-products');
-      if (!grid) return;
-      if (products.length === 0) {
-        grid.innerHTML = '';
-        noProducts?.classList.remove('hidden');
-        return;
-      }
-      noProducts?.classList.add('hidden');
-      grid.innerHTML = products.map(p => `
-        <div class="bg-white rounded-xl overflow-hidden shadow-lg" data-admin-product-id="${p.__backendId}">
-          <div class="h-40 bg-gradient-to-br from-amber-200 to-amber-300 flex items-center justify-center relative overflow-hidden">
-            ${p.image_url 
-              ? `<img src="${p.image_url}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                 <div class="absolute inset-0 bg-gradient-to-br from-amber-200 to-amber-300 items-center justify-center text-5xl hidden">${getCategoryEmoji(p.category)}</div>`
-              : `<div class="text-5xl">${getCategoryEmoji(p.category)}</div>`
-            }
-          </div>
-          <div class="p-4">
-            <h3 class="font-bold text-amber-900 mb-1">${p.name}</h3>
-            <p class="text-sm text-gray-600 mb-2">${getCategoryLabel(p.category)} ${p.wood_type ? '• ' + p.wood_type : ''}</p>
-            <p class="text-amber-600 font-medium mb-3">${p.price ? '₹' + p.price : 'No price set'}</p>
-            <button onclick="deleteProduct('${p.__backendId}')" class="w-full bg-red-100 hover:bg-red-200 text-red-700 py-2 rounded-lg text-sm font-medium transition-colors"> 🗑️ Delete </button>
-          </div>
-        </div>
-      `).join('');
-    }
+    window.changeSlide = function(productId, direction) {
+      const container = document.querySelector(`.slideshow-container[data-product-id="${productId}"]`);
+      if (!container) return;
+      const imgs = container.querySelectorAll('.slide-img');
+      let activeIndex = Array.from(imgs).findIndex(img => img.classList.contains('active'));
+      imgs[activeIndex].classList.remove('active');
+      let newIndex = activeIndex + direction;
+      if (newIndex < 0) newIndex = imgs.length - 1;
+      if (newIndex >= imgs.length) newIndex = 0;
+      imgs[newIndex].classList.add('active');
+      const dots = container.querySelectorAll('.dot');
+      dots.forEach(d => d.classList.remove('active'));
+      dots[newIndex]?.classList.add('active');
+    };
+    window.setSlide = function(productId, index) {
+      const container = document.querySelector(`.slideshow-container[data-product-id="${productId}"]`);
+      if (!container) return;
+      const imgs = container.querySelectorAll('.slide-img');
+      imgs.forEach((img, i) => img.classList.toggle('active', i === index));
+      const dots = container.querySelectorAll('.dot');
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+    };
 
-    function renderInquiries() {
-      const list = document.getElementById('inquiries-list');
-      const noInquiries = document.getElementById('no-inquiries');
-      if (!list) return;
-      if (inquiries.length === 0) {
-        list.innerHTML = '';
-        noInquiries?.classList.remove('hidden');
-        return;
-      }
-      noInquiries?.classList.add('hidden');
-      const sorted = [...inquiries].sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0));
-      list.innerHTML = sorted.map(inq => `
-        <div class="bg-white rounded-xl shadow-md p-6" data-inquiry-id="${inq.__backendId}">
-          <div class="flex flex-col md:flex-row justify-between gap-4">
-            <div class="flex-1">
-              <div class="flex items-center gap-3 mb-2">
-                <span class="text-2xl">👤</span>
-                <div>
-                  <h3 class="font-bold text-lg text-amber-900">${inq.customer_name || 'Unknown'}</h3>
-                  <a href="tel:${inq.customer_phone}" class="text-amber-600 hover:underline">${inq.customer_phone}</a>
-                </div>
-              </div>
-              ${inq.customer_message ? `<p class="text-gray-600 mt-2 bg-gray-50 p-3 rounded-lg">"${inq.customer_message}"</p>` : ''}
-              <p class="text-sm text-gray-400 mt-2">${formatDate(inq.created_at)}</p>
-            </div>
-            <div class="flex flex-col gap-2">
-              <a href="https://wa.me/91${inq.customer_phone?.replace(/\D/g, '')}" target="_blank" rel="noopener noreferrer" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-center flex items-center justify-center gap-2">💬 WhatsApp</a>
-              <a href="tel:${inq.customer_phone}" class="bg-amber-100 hover:bg-amber-200 text-amber-800 px-4 py-2 rounded-lg text-center flex items-center justify-center gap-2">📞 Call</a>
-              <button onclick="deleteInquiry('${inq.__backendId}')" class="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg text-sm"> 🗑️ Delete </button>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    // helpers
     function getCategoryEmoji(cat) { const e = { bed:'🛏️', wardrobe:'🚪', almirah:'🗄️', rack:'📚', other:'🪑' }; return e[cat] || '🪵'; }
     function getCategoryLabel(cat) { const l = { bed:'Bed', wardrobe:'Wardrobe', almirah:'Almirah', rack:'Rack', other:'Other' }; return l[cat] || 'Furniture'; }
-    function formatDate(d) { if (!d) return ''; try { return new Date(d).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }); } catch(e){ return d; } }
 
-    // Filter
-    window.filterProducts = function(category) {
-      currentFilter = category;
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        if (btn.dataset.filter === category) {
-          btn.classList.add('bg-amber-600', 'text-white');
-          btn.classList.remove('bg-amber-100', 'text-amber-800');
-        } else {
-          btn.classList.remove('bg-amber-600', 'text-white');
-          btn.classList.add('bg-amber-100', 'text-amber-800');
-        }
-      });
-      renderProducts();
+    // ---------- SIGN IN PAGE (Phone + Security Code) ----------
+    window.showSignInPage = function() {
+      document.getElementById('signin-page').classList.remove('hidden');
+      document.getElementById('customer-view').classList.add('hidden');
+    };
+    window.hideSignInPage = function() {
+      document.getElementById('signin-page').classList.add('hidden');
+      document.getElementById('customer-view').classList.remove('hidden');
     };
 
-    // ----- Admin UI -----
-    window.showAdminLogin = function() { 
-      document.getElementById('admin-login-modal').classList.remove('hidden'); 
-      updateSetupVisibility(); 
-    };
+    // Sign-in form handler – updated with new phone 8386076107
+    document.getElementById('signin-form')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const phoneInput = document.getElementById('signin-phone').value.trim();
+      const codeInput = document.getElementById('signin-code').value.trim();
+      const errorEl = document.getElementById('signin-error');
+      
+      if (phoneInput !== ADMIN_PHONE) {
+        errorEl.textContent = '❌ Invalid admin phone.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      if (codeInput !== SECURITY_CODE) {
+        errorEl.textContent = '❌ Incorrect security code. Access denied.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      errorEl.classList.add('hidden');
+      hideSignInPage();
+      document.getElementById('admin-login-modal').classList.remove('hidden');
+    });
+
+    // ---------- ADMIN LOGIN & SETUP ----------
     window.hideAdminLogin = function() { 
       document.getElementById('admin-login-modal').classList.add('hidden'); 
       document.getElementById('login-error').classList.add('hidden'); 
     };
-    function updateSetupVisibility() {
-      const setupSec = document.getElementById('setup-section');
-      if (setupSec) setupSec.classList.toggle('hidden', adminCredentials !== null);
-    }
+
     window.showSetupForm = function() { 
       document.getElementById('admin-login-modal').classList.add('hidden'); 
       document.getElementById('admin-setup-modal').classList.remove('hidden'); 
@@ -755,7 +815,7 @@
       document.getElementById('setup-error').classList.add('hidden'); 
     };
 
-    // Setup form
+    // Setup form – create admin credentials
     document.getElementById('setup-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('setup-email').value.trim();
@@ -766,20 +826,12 @@
       if (adminCredentials) { err.textContent = 'Admin already exists!'; err.classList.remove('hidden'); return; }
       const btn = document.getElementById('setup-btn');
       btn.disabled = true; btn.textContent = 'Creating...';
-      const result = await window.dataSdk.create({
-        type: 'admin_credentials',
-        name: email,
-        description: pwd,
-        category: '', wood_type: '', price: '', image_url: '',
-        customer_name: '', customer_phone: '', customer_message: '',
-        created_at: new Date().toISOString()
-      });
+      const result = await window.dataSdk.create({ type: 'admin_credentials', name: email, description: pwd, category: '', wood_type: '', price: '', images: [], customer_name: '', customer_phone: '', customer_message: '', created_at: new Date().toISOString() });
       btn.disabled = false; btn.textContent = 'Create Admin Account';
-      if (result.isOk) { hideSetupForm(); showToast('✅ Admin account created! Login now.'); }
-      else { err.textContent = 'Failed to create'; err.classList.remove('hidden'); }
+      if (result.isOk) { hideSetupForm(); showToast('✅ Admin account created! Login now.'); } else { err.textContent = 'Failed'; err.classList.remove('hidden'); }
     });
 
-    // Login
+    // Login form (email/password)
     document.getElementById('login-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
       const email = document.getElementById('admin-email').value.trim();
@@ -790,106 +842,120 @@
         isLoggedIn = true;
         hideAdminLogin();
         document.getElementById('customer-view').classList.add('hidden');
+        document.getElementById('signin-page')?.classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
         showToast('✅ Welcome Admin!');
       } else { err.textContent = 'Invalid email or password!'; err.classList.remove('hidden'); }
     });
 
-    window.logoutAdmin = function() {
-      isLoggedIn = false;
-      document.getElementById('admin-panel').classList.add('hidden');
-      document.getElementById('customer-view').classList.remove('hidden');
-      showToast('👋 Logged out');
-    };
-    window.showCustomerView = function() {
-      document.getElementById('admin-panel').classList.add('hidden');
-      document.getElementById('customer-view').classList.remove('hidden');
-    };
+    // Admin functions
+    window.logoutAdmin = function() { isLoggedIn = false; document.getElementById('admin-panel').classList.add('hidden'); document.getElementById('customer-view').classList.remove('hidden'); showToast('👋 Logged out'); };
+    window.showCustomerView = function() { document.getElementById('admin-panel').classList.add('hidden'); document.getElementById('customer-view').classList.remove('hidden'); };
     window.showAdminTab = function(tab) {
-      document.querySelectorAll('.admin-tab').forEach(t => {
-        t.classList.remove('text-amber-600', 'border-b-2', 'border-amber-600', 'active');
-        t.classList.add('text-gray-500');
-      });
+      document.querySelectorAll('.admin-tab').forEach(t => { t.classList.remove('text-amber-600', 'border-b-2', 'border-amber-600', 'active'); t.classList.add('text-gray-500'); });
       const activeTab = document.querySelector(`[data-tab="${tab}"]`);
-      if (activeTab) {
-        activeTab.classList.add('text-amber-600', 'border-b-2', 'border-amber-600', 'active');
-        activeTab.classList.remove('text-gray-500');
-      }
+      if (activeTab) { activeTab.classList.add('text-amber-600', 'border-b-2', 'border-amber-600', 'active'); activeTab.classList.remove('text-gray-500'); }
       document.querySelectorAll('.admin-content').forEach(c => c.classList.add('hidden'));
-      const content = document.getElementById(`tab-${tab}`);
-      if (content) content.classList.remove('hidden');
+      document.getElementById(`tab-${tab}`)?.classList.remove('hidden');
     };
 
-    // ---------- IMAGE UPLOAD (Gallery) PREVIEW & BASE64 CONVERSION ----------
-    const fileInput = document.getElementById('product-image-file');
-    const previewContainer = document.getElementById('image-preview-container');
-    const previewImg = document.getElementById('image-preview');
-    const hiddenBase64 = document.getElementById('product-image-base64');
+    // Multiple image upload handling
+    const multiFileInput = document.getElementById('product-image-files');
+    const multiPreview = document.getElementById('multi-preview-container');
+    const hiddenImagesJson = document.getElementById('product-images-json');
+    let uploadedImagesBase64 = [];
 
-    if (fileInput) {
-      fileInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-          // optional size check (5MB)
-          if (file.size > 5 * 1024 * 1024) {
-            showToast('⚠️ Image too large. Max 5MB.');
-            fileInput.value = '';
-            previewContainer.classList.add('hidden');
-            hiddenBase64.value = '';
-            return;
-          }
+    if (multiFileInput) {
+      multiFileInput.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        uploadedImagesBase64 = [];
+        multiPreview.innerHTML = '';
+        if (files.length === 0) { hiddenImagesJson.value = ''; return; }
+        let loaded = 0;
+        files.forEach((file) => {
+          if (file.size > 5 * 1024 * 1024) { showToast(`⚠️ ${file.name} too large (max 5MB)`); return; }
           const reader = new FileReader();
           reader.onload = function(ev) {
-            previewImg.src = ev.target.result;
-            previewContainer.classList.remove('hidden');
-            hiddenBase64.value = ev.target.result; // store base64 string
+            uploadedImagesBase64.push(ev.target.result);
+            const thumbDiv = document.createElement('div');
+            thumbDiv.className = 'gallery-thumb';
+            thumbDiv.innerHTML = `<img src="${ev.target.result}" alt="preview">`;
+            multiPreview.appendChild(thumbDiv);
+            loaded++;
+            if (loaded === files.length) {
+              hiddenImagesJson.value = JSON.stringify(uploadedImagesBase64);
+            }
           };
           reader.readAsDataURL(file);
-        } else {
-          previewContainer.classList.add('hidden');
-          hiddenBase64.value = '';
-        }
+        });
       });
     }
 
-    // ---------- ADD PRODUCT (with base64 image) ----------
+    // Add product with multiple images
     document.getElementById('add-product-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (products.length >= 999) { showToast('⚠️ Limit reached'); return; }
-      
       const btn = document.getElementById('add-product-btn');
       btn.disabled = true; btn.textContent = 'Adding...';
-
-      // Get base64 from hidden input, if empty fallback to empty string (no image)
-      const imageBase64 = document.getElementById('product-image-base64')?.value || '';
-
+      let imagesArray = [];
+      try { imagesArray = JSON.parse(document.getElementById('product-images-json')?.value || '[]'); } catch(e) { imagesArray = []; }
       const productData = {
         type: 'product',
         name: document.getElementById('product-name').value.trim(),
         category: document.getElementById('product-category').value,
         wood_type: document.getElementById('product-wood').value,
         price: document.getElementById('product-price').value.trim(),
-        image_url: imageBase64,  // store base64 directly
+        images: imagesArray,
         description: document.getElementById('product-description').value.trim(),
         customer_name: '', customer_phone: '', customer_message: '',
         created_at: new Date().toISOString()
       };
-      
       const result = await window.dataSdk.create(productData);
       btn.disabled = false; btn.textContent = '➕ Add Product';
       if (result.isOk) {
-        // Reset form fields
         document.getElementById('add-product-form').reset();
-        // Also clear preview and hidden base64
-        previewContainer.classList.add('hidden');
-        hiddenBase64.value = '';
+        multiPreview.innerHTML = '';
+        hiddenImagesJson.value = '';
+        uploadedImagesBase64 = [];
         document.getElementById('add-success').classList.remove('hidden');
         setTimeout(() => document.getElementById('add-success').classList.add('hidden'), 3000);
         showToast('✅ Product added!');
       } else showToast('❌ Failed');
     });
 
-    // Delete product / inquiry
+    // Render admin products
+    function renderAdminProducts() {
+      const grid = document.getElementById('admin-products-grid');
+      const noProducts = document.getElementById('admin-no-products');
+      if (!grid) return;
+      if (products.length === 0) { grid.innerHTML = ''; noProducts?.classList.remove('hidden'); return; }
+      noProducts?.classList.add('hidden');
+      grid.innerHTML = products.map(p => {
+        const imgCount = p.images && Array.isArray(p.images) ? p.images.length : 0;
+        return `<div class="bg-white rounded-xl overflow-hidden shadow-lg" data-admin-product-id="${p.__backendId}"><div class="h-40 bg-gradient-to-br from-amber-200 to-amber-300 flex items-center justify-center relative overflow-hidden">${p.images && p.images.length ? `<img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover">` : `<div class="text-5xl">${getCategoryEmoji(p.category)}</div>`}</div><div class="p-4"><h3 class="font-bold text-amber-900 mb-1">${p.name}</h3><p class="text-sm text-gray-600 mb-2">${getCategoryLabel(p.category)} ${p.wood_type ? '• ' + p.wood_type : ''}</p><p class="text-sm text-blue-600 mb-2">📸 ${imgCount} image(s)</p><p class="text-amber-600 font-medium mb-3">${p.price ? '₹' + p.price : 'No price set'}</p><button onclick="deleteProduct('${p.__backendId}')" class="w-full bg-red-100 hover:bg-red-200 text-red-700 py-2 rounded-lg text-sm font-medium transition-colors"> 🗑️ Delete </button></div></div>`;
+      }).join('');
+    }
+
+    function renderInquiries() {
+      const list = document.getElementById('inquiries-list');
+      const noInquiries = document.getElementById('no-inquiries');
+      if (!list) return;
+      if (inquiries.length === 0) { list.innerHTML = ''; noInquiries?.classList.remove('hidden'); return; }
+      noInquiries?.classList.add('hidden');
+      const sorted = [...inquiries].sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0));
+      list.innerHTML = sorted.map(inq => `<div class="bg-white rounded-xl shadow-md p-6"><div class="flex flex-col md:flex-row justify-between gap-4"><div class="flex-1"><div class="flex items-center gap-3 mb-2"><span class="text-2xl">👤</span><div><h3 class="font-bold text-lg text-amber-900">${inq.customer_name || 'Unknown'}</h3><a href="tel:${inq.customer_phone}" class="text-amber-600 hover:underline">${inq.customer_phone}</a></div></div>${inq.customer_message ? `<p class="text-gray-600 mt-2 bg-gray-50 p-3 rounded-lg">"${inq.customer_message}"</p>` : ''}<p class="text-sm text-gray-400 mt-2">${formatDate(inq.created_at)}</p></div><div class="flex flex-col gap-2"><a href="https://wa.me/91${inq.customer_phone?.replace(/\D/g, '')}" target="_blank" rel="noopener noreferrer" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-center flex items-center justify-center gap-2">💬 WhatsApp</a><a href="tel:${inq.customer_phone}" class="bg-amber-100 hover:bg-amber-200 text-amber-800 px-4 py-2 rounded-lg text-center flex items-center justify-center gap-2">📞 Call</a><button onclick="deleteInquiry('${inq.__backendId}')" class="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg text-sm"> 🗑️ Delete </button></div></div></div>`).join('');
+    }
+
+    function formatDate(d) { if (!d) return ''; try { return new Date(d).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }); } catch(e){ return d; } }
+
+    window.filterProducts = function(category) {
+      currentFilter = category;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.filter === category) { btn.classList.add('bg-amber-600', 'text-white'); btn.classList.remove('bg-amber-100', 'text-amber-800'); }
+        else { btn.classList.remove('bg-amber-600', 'text-white'); btn.classList.add('bg-amber-100', 'text-amber-800'); }
+      });
+      renderProducts();
+    };
+
     window.deleteProduct = async function(id) {
       const p = products.find(x => x.__backendId === id); if (!p) return;
       const res = await window.dataSdk.delete(p);
@@ -897,8 +963,7 @@
     };
     window.deleteInquiry = async function(id) {
       const i = inquiries.find(x => x.__backendId === id); if (!i) return;
-      await window.dataSdk.delete(i);
-      showToast('🗑️ Inquiry deleted');
+      await window.dataSdk.delete(i); showToast('🗑️ Inquiry deleted');
     };
 
     // Inquiry form
@@ -910,14 +975,8 @@
       const msg = document.getElementById('customer-message').value.trim();
       const btn = document.getElementById('submit-btn');
       if (!name || !phone) return;
-
       btn.disabled = true; btn.innerHTML = '<span class="animate-spin">⏳</span> Sending...';
-      const inquiryData = {
-        type: 'inquiry',
-        name: '', category: req, wood_type: '', price: '', image_url: '', description: '',
-        customer_name: name, customer_phone: phone, customer_message: msg,
-        created_at: new Date().toISOString()
-      };
+      const inquiryData = { type: 'inquiry', name: '', category: req, wood_type: '', price: '', images: [], description: '', customer_name: name, customer_phone: phone, customer_message: msg, created_at: new Date().toISOString() };
       const result = await window.dataSdk.create(inquiryData);
       btn.disabled = false; btn.innerHTML = '<span>💬</span> Send Inquiry via WhatsApp';
       if (result.isOk) {
@@ -928,14 +987,8 @@
       } else showToast('❌ Failed. Please call.');
     });
 
-    function showToast(m) {
-      const toast = document.getElementById('toast');
-      const msg = document.getElementById('toast-message');
-      if (msg) msg.textContent = m;
-      if (toast) { toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 3000); }
-    }
+    function showToast(m) { const toast = document.getElementById('toast'); const msg = document.getElementById('toast-message'); if (msg) msg.textContent = m; if (toast) { toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 3000); } }
 
-    // start
     initApp();
   </script>
 </body>
