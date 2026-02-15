@@ -8,29 +8,34 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <!-- STEP 2: Firebase Firestore SDK (module) -->
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-  import { getStorage } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+    import { 
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      updateDoc,
+      deleteDoc,
+      doc
+    } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyD4L-J0te53oZp7-A4peYGV25By42mL5P8",
-    authDomain: "anjalifurnitureworks-c03d2.firebaseapp.com",
-    projectId: "anjalifurnitureworks-c03d2",
-    storageBucket: "anjalifurnitureworks-c03d2.firebasestorage.app",
-    messagingSenderId: "3233497200",
-    appId: "1:3233497200:web:bc2924d5b484cc382c34b5",
-    measurementId: "G-K2F0C1NH48"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyD4L-J0te53oZp7-A4peYGV25By42mL5P8",
+      authDomain: "anjalifurnitureworks-c03d2.firebaseapp.com",
+      projectId: "anjalifurnitureworks-c03d2",
+      storageBucket: "anjalifurnitureworks-c03d2.firebasestorage.app",
+      messagingSenderId: "3233497200",
+      appId: "1:3233497200:web:bc2924d5b484cc382c34b5"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-  const storage = getStorage(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  console.log("🔥 Firebase Connected Successfully");
-</script>
+    window.db = db;
+    console.log("🔥 Firebase Connected Successfully");
+  </script>
   <style>
     /* core styles */
     body { box-sizing: border-box; }
@@ -695,109 +700,38 @@
   </div>
 
   <script>
-    // ---------- REAL SDK IMPLEMENTATION (API Integration) ----------
+    // STEP 3: Firebase SDK wrappers (no fetch/api calls)
     window.elementSdk = {
-      init: async (opts) => {
-        try {
-          const response = await fetch('/api/config');
-          const config = await response.json();
-          if (opts.onConfigChange) opts.onConfigChange(config);
-          if (opts.mapToCapabilities) opts.mapToCapabilities(config);
-          if (opts.mapToEditPanelValues) opts.mapToEditPanelValues(new Map(Object.entries(config)));
-        } catch (error) {
-          console.error('Failed to load config:', error);
-          showToast('⚠️ Failed to load configuration');
-        }
-      },
-      setConfig: async (newCfg) => {
-        try {
-          await fetch('/api/config', { 
-            method: 'PUT', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify(newCfg) 
-          });
-        } catch (error) {
-          console.error('Failed to save config:', error);
-          showToast('⚠️ Failed to save configuration');
-        }
-      },
-      getConfig: async () => {
-        try {
-          const response = await fetch('/api/config');
-          return await response.json();
-        } catch (error) {
-          console.error('Failed to get config:', error);
-          showToast('⚠️ Failed to load configuration');
-          return {};
-        }
-      }
+      async init() {},
+      async getConfig() { return {}; },
+      async setConfig() {}
     };
 
     window.dataSdk = {
-      init: async (handler) => {
-        try {
-          const response = await fetch('/api/data');
-          const data = await response.json();
-          if (handler?.onDataChanged) handler.onDataChanged(data);
-          return { isOk: true };
-        } catch (error) {
-          console.error('Failed to load data:', error);
-          showToast('⚠️ Failed to load data from server');
-          return { isOk: false, error: error.message };
-        }
+      async init(handler) {
+        const snapshot = await getDocs(collection(window.db, "records"));
+        const data = [];
+        snapshot.forEach(docSnap => {
+          data.push({ __backendId: docSnap.id, ...docSnap.data() });
+        });
+        if (handler?.onDataChanged) handler.onDataChanged(data);
+        return { isOk: true };
       },
-      create: async (data) => {
-        try {
-          const response = await fetch('/api/data', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify(data) 
-          });
-          const result = await response.json();
-          return result;
-        } catch (error) {
-          console.error('Failed to create record:', error);
-          showToast('⚠️ Failed to save to server');
-          return { isOk: false, error: error.message };
-        }
-      },
-      update: async (record, updates) => {
-        try {
-          const response = await fetch(`/api/data/${record.__backendId}`, { 
-            method: 'PUT', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ ...updates, type: record.type }) 
-          });
-          const result = await response.json();
-          return result;
-        } catch (error) {
-          console.error('Failed to update record:', error);
-          showToast('⚠️ Failed to update on server');
-          return { isOk: false, error: error.message };
-        }
-      },
-      delete: async (record) => {
-        try {
-          const response = await fetch(`/api/data/${record.__backendId}`, { 
-            method: 'DELETE', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ type: record.type }) 
-          });
-          const result = await response.json();
-          return result;
-        } catch (error) {
-          console.error('Failed to delete record:', error);
-          showToast('⚠️ Failed to delete from server');
-          return { isOk: false, error: error.message };
-        }
-      }
-    };
 
-    // Error Handler
-    window.handleApiError = function(error) {
-      console.error('API Error:', error);
-      showToast('⚠️ Server error. Please try again.');
-      return { isOk: false, error };
+      async create(data) {
+        const docRef = await addDoc(collection(window.db, "records"), data);
+        return { isOk: true, id: docRef.id };
+      },
+
+      async update(record, updates) {
+        await updateDoc(doc(window.db, "records", record.__backendId), updates);
+        return { isOk: true };
+      },
+
+      async delete(record) {
+        await deleteDoc(doc(window.db, "records", record.__backendId));
+        return { isOk: true };
+      }
     };
 
     // ---------- GLOBAL STATE ----------
@@ -831,16 +765,7 @@
 
     // ---------- INIT ----------
     async function initApp() {
-      // Load config first
-      try {
-        const savedConfig = await window.elementSdk.getConfig();
-        config = { ...config, ...savedConfig };
-        updateUIFromConfig();
-      } catch (error) {
-        console.error('Config load error:', error);
-      }
-
-      // Then load data
+      // No config fetch needed, just data init
       await window.dataSdk.init(dataHandler);
       
       // Hide loading screen
@@ -1322,4 +1247,3 @@
   </script>
 </body>
 </html>
-
