@@ -11,9 +11,16 @@
   <!-- Firebase SDK -->
  <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-  import { getStorage } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js";
+
+  import { 
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    updateDoc,
+    deleteDoc,
+    doc
+  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD4L-J0te53oZp7-A4peYGV25By42mL5P8",
@@ -21,16 +28,22 @@
     projectId: "anjalifurnitureworks-c03d2",
     storageBucket: "anjalifurnitureworks-c03d2.firebasestorage.app",
     messagingSenderId: "3233497200",
-    appId: "1:3233497200:web:bc2924d5b484cc382c34b5",
-    measurementId: "G-K2F0C1NH48"
+    appId: "1:3233497200:web:bc2924d5b484cc382c34b5"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const auth = getAuth(app);
-  const storage = getStorage(app);
 
-  console.log("🔥 Firebase Connected Successfully");
+  // Make global
+  window.db = db;
+  window.collection = collection;
+  window.addDoc = addDoc;
+  window.getDocs = getDocs;
+  window.updateDoc = updateDoc;
+  window.deleteDoc = deleteDoc;
+  window.docRef = doc;
+
+  console.log("🔥 Firestore Connected Successfully");
 </script>
 
   <style>
@@ -1317,4 +1330,5 @@
   </script>
 </body>
 </html>
+
 
