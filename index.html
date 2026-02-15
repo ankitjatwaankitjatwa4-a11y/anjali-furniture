@@ -9,33 +9,30 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
   <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-    import { 
-      getFirestore,
-      collection,
-      addDoc,
-      getDocs,
-      updateDoc,
-      deleteDoc,
-      doc
-    } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+  import { getStorage } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD4L-J0te53oZp7-A4peYGV25By42mL5P8",
-      authDomain: "anjalifurnitureworks-c03d2.firebaseapp.com",
-      projectId: "anjalifurnitureworks-c03d2",
-      storageBucket: "anjalifurnitureworks-c03d2.firebasestorage.app",
-      messagingSenderId: "3233497200",
-      appId: "1:3233497200:web:bc2924d5b484cc382c34b5"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyD4L-J0te53oZp7-A4peYGV25By42mL5P8",
+    authDomain: "anjalifurnitureworks-c03d2.firebaseapp.com",
+    projectId: "anjalifurnitureworks-c03d2",
+    storageBucket: "anjalifurnitureworks-c03d2.firebasestorage.app",
+    messagingSenderId: "3233497200",
+    appId: "1:3233497200:web:bc2924d5b484cc382c34b5",
+    measurementId: "G-K2F0C1NH48"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  const storage = getStorage(app);
 
-    window.db = db;
-    console.log("🔥 Firebase Connected Successfully");
-  </script>
+  console.log("🔥 Firebase Connected Successfully");
+</script>
+
   <style>
     /* core styles */
     body { box-sizing: border-box; }
@@ -1320,3 +1317,4 @@
   </script>
 </body>
 </html>
+
