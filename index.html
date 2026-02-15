@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
-  <!-- STEP 2: Firebase Firestore SDK (module) -->
+  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
     import { 
@@ -700,37 +700,55 @@
   </div>
 
   <script>
-    // STEP 3: Firebase SDK wrappers (no fetch/api calls)
-    window.elementSdk = {
-      async init() {},
-      async getConfig() { return {}; },
-      async setConfig() {}
-    };
-
+    // Firebase SDK wrappers - NO API CALLS
     window.dataSdk = {
       async init(handler) {
-        const snapshot = await getDocs(collection(window.db, "records"));
-        const data = [];
-        snapshot.forEach(docSnap => {
-          data.push({ __backendId: docSnap.id, ...docSnap.data() });
-        });
-        if (handler?.onDataChanged) handler.onDataChanged(data);
-        return { isOk: true };
+        try {
+          const snapshot = await getDocs(collection(window.db, "records"));
+          const data = [];
+          snapshot.forEach(docSnap => {
+            data.push({ __backendId: docSnap.id, ...docSnap.data() });
+          });
+          if (handler?.onDataChanged) handler.onDataChanged(data);
+          return { isOk: true };
+        } catch (error) {
+          console.error('Firebase error:', error);
+          showToast('⚠️ Failed to load data');
+          return { isOk: false, error: error.message };
+        }
       },
 
       async create(data) {
-        const docRef = await addDoc(collection(window.db, "records"), data);
-        return { isOk: true, id: docRef.id };
+        try {
+          const docRef = await addDoc(collection(window.db, "records"), data);
+          return { isOk: true, id: docRef.id };
+        } catch (error) {
+          console.error('Firebase create error:', error);
+          showToast('⚠️ Failed to save');
+          return { isOk: false, error: error.message };
+        }
       },
 
       async update(record, updates) {
-        await updateDoc(doc(window.db, "records", record.__backendId), updates);
-        return { isOk: true };
+        try {
+          await updateDoc(doc(window.db, "records", record.__backendId), updates);
+          return { isOk: true };
+        } catch (error) {
+          console.error('Firebase update error:', error);
+          showToast('⚠️ Failed to update');
+          return { isOk: false, error: error.message };
+        }
       },
 
       async delete(record) {
-        await deleteDoc(doc(window.db, "records", record.__backendId));
-        return { isOk: true };
+        try {
+          await deleteDoc(doc(window.db, "records", record.__backendId));
+          return { isOk: true };
+        } catch (error) {
+          console.error('Firebase delete error:', error);
+          showToast('⚠️ Failed to delete');
+          return { isOk: false, error: error.message };
+        }
       }
     };
 
@@ -765,10 +783,7 @@
 
     // ---------- INIT ----------
     async function initApp() {
-      // No config fetch needed, just data init
       await window.dataSdk.init(dataHandler);
-      
-      // Hide loading screen
       document.getElementById('loading-screen').classList.add('hidden');
       document.getElementById('customer-view').classList.remove('hidden');
     }
@@ -841,6 +856,7 @@
       dots.forEach(d => d.classList.remove('active'));
       dots[newIndex]?.classList.add('active');
     };
+    
     window.setSlide = function(productId, index) {
       const container = document.querySelector(`.slideshow-container[data-product-id="${productId}"]`);
       if (!container) return;
@@ -858,10 +874,12 @@
       document.getElementById('signin-page').classList.remove('hidden');
       document.getElementById('customer-view').classList.add('hidden');
     };
+    
     window.hideSignInPage = function() {
       document.getElementById('signin-page').classList.add('hidden');
       document.getElementById('customer-view').classList.remove('hidden');
     };
+    
     document.getElementById('signin-form')?.addEventListener('submit', function(e) {
       e.preventDefault();
       const phoneInput = document.getElementById('signin-phone').value.trim();
@@ -888,10 +906,12 @@
       document.getElementById('admin-login-modal').classList.add('hidden'); 
       document.getElementById('login-error').classList.add('hidden'); 
     };
+    
     window.showSetupForm = function() { 
       document.getElementById('admin-login-modal').classList.add('hidden'); 
       document.getElementById('admin-setup-modal').classList.remove('hidden'); 
     };
+    
     window.hideSetupForm = function() { 
       document.getElementById('admin-setup-modal').classList.add('hidden'); 
       document.getElementById('setup-error').classList.add('hidden'); 
@@ -907,9 +927,27 @@
       if (adminCredentials) { err.textContent = 'Admin already exists!'; err.classList.remove('hidden'); return; }
       const btn = document.getElementById('setup-btn');
       btn.disabled = true; btn.textContent = 'Creating...';
-      const result = await window.dataSdk.create({ type: 'admin_credentials', name: email, description: pwd, category: '', wood_type: '', price: '', images: [], customer_name: '', customer_phone: '', customer_message: '', created_at: new Date().toISOString() });
+      const result = await window.dataSdk.create({ 
+        type: 'admin_credentials', 
+        name: email, 
+        description: pwd, 
+        category: '', 
+        wood_type: '', 
+        price: '', 
+        images: [], 
+        customer_name: '', 
+        customer_phone: '', 
+        customer_message: '', 
+        created_at: new Date().toISOString() 
+      });
       btn.disabled = false; btn.textContent = 'Create Admin Account';
-      if (result.isOk) { hideSetupForm(); showToast('✅ Admin account created! Login now.'); } else { err.textContent = 'Failed'; err.classList.remove('hidden'); }
+      if (result.isOk) { 
+        hideSetupForm(); 
+        showToast('✅ Admin account created! Login now.'); 
+      } else { 
+        err.textContent = 'Failed'; 
+        err.classList.remove('hidden'); 
+      }
     });
 
     document.getElementById('login-form')?.addEventListener('submit', (e) => {
@@ -917,22 +955,44 @@
       const email = document.getElementById('admin-email').value.trim();
       const pwd = document.getElementById('admin-password').value;
       const err = document.getElementById('login-error');
-      if (!adminCredentials) { err.textContent = 'No admin account found. Setup first.'; err.classList.remove('hidden'); return; }
+      if (!adminCredentials) { 
+        err.textContent = 'No admin account found. Setup first.'; 
+        err.classList.remove('hidden'); 
+        return; 
+      }
       if (email === adminCredentials.name && pwd === adminCredentials.description) {
         document.getElementById('admin-login-modal').classList.add('hidden');
         document.getElementById('customer-view').classList.add('hidden');
         document.getElementById('signin-page')?.classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
         showToast('✅ Welcome Admin!');
-      } else { err.textContent = 'Invalid email or password!'; err.classList.remove('hidden'); }
+      } else { 
+        err.textContent = 'Invalid email or password!'; 
+        err.classList.remove('hidden'); 
+      }
     });
 
-    window.logoutAdmin = function() { document.getElementById('admin-panel').classList.add('hidden'); document.getElementById('customer-view').classList.remove('hidden'); showToast('👋 Logged out'); };
-    window.showCustomerView = function() { document.getElementById('admin-panel').classList.add('hidden'); document.getElementById('customer-view').classList.remove('hidden'); };
+    window.logoutAdmin = function() { 
+      document.getElementById('admin-panel').classList.add('hidden'); 
+      document.getElementById('customer-view').classList.remove('hidden'); 
+      showToast('👋 Logged out'); 
+    };
+    
+    window.showCustomerView = function() { 
+      document.getElementById('admin-panel').classList.add('hidden'); 
+      document.getElementById('customer-view').classList.remove('hidden'); 
+    };
+    
     window.showAdminTab = function(tab) {
-      document.querySelectorAll('.admin-tab').forEach(t => { t.classList.remove('text-amber-600', 'border-b-2', 'border-amber-600'); t.classList.add('text-gray-500'); });
+      document.querySelectorAll('.admin-tab').forEach(t => { 
+        t.classList.remove('text-amber-600', 'border-b-2', 'border-amber-600'); 
+        t.classList.add('text-gray-500'); 
+      });
       const activeTab = document.querySelector(`[data-tab="${tab}"]`);
-      if (activeTab) { activeTab.classList.add('text-amber-600', 'border-b-2', 'border-amber-600'); activeTab.classList.remove('text-gray-500'); }
+      if (activeTab) { 
+        activeTab.classList.add('text-amber-600', 'border-b-2', 'border-amber-600'); 
+        activeTab.classList.remove('text-gray-500'); 
+      }
       document.querySelectorAll('.admin-content').forEach(c => c.classList.add('hidden'));
       document.getElementById(`tab-${tab}`)?.classList.remove('hidden');
     };
@@ -1005,7 +1065,6 @@
       const product = products.find(p => p.__backendId === id);
       if (!product) return;
       
-      // Fill form with product data
       document.getElementById('edit-product-id').value = product.__backendId;
       document.getElementById('edit-product-name').value = product.name || '';
       document.getElementById('edit-product-category').value = product.category || 'bed';
@@ -1013,14 +1072,11 @@
       document.getElementById('edit-product-price').value = product.price || '';
       document.getElementById('edit-product-description').value = product.description || '';
       
-      // Display existing images
       renderEditImages(product.images || []);
       
-      // Clear new preview
       document.getElementById('edit-new-preview').innerHTML = '';
       document.getElementById('edit-product-images').value = '';
       
-      // Show modal
       document.getElementById('edit-product-modal').classList.remove('hidden');
     };
 
@@ -1044,7 +1100,6 @@
         </div>
       `).join('');
       
-      // Store current images in hidden input
       document.getElementById('edit-images-json').value = JSON.stringify(images);
     }
 
@@ -1053,11 +1108,8 @@
       let images = JSON.parse(imagesJson || '[]');
       
       if (index > 0 && index < images.length) {
-        // Move selected image to front
         const [selectedImage] = images.splice(index, 1);
         images.unshift(selectedImage);
-        
-        // Update display
         renderEditImages(images);
         showToast('⭐ Cover image updated');
       }
@@ -1074,7 +1126,6 @@
       }
     };
 
-    // Handle new image uploads in edit modal
     document.getElementById('edit-product-images')?.addEventListener('change', function(e) {
       const files = Array.from(e.target.files);
       const preview = document.getElementById('edit-new-preview');
@@ -1099,14 +1150,13 @@
           preview.appendChild(thumbDiv);
           loaded++;
           if (loaded === files.length) {
-            // Add new images to existing ones
             const existingJson = document.getElementById('edit-images-json').value;
             let existingImages = JSON.parse(existingJson || '[]');
             existingImages = [...existingImages, ...newImages];
             document.getElementById('edit-images-json').value = JSON.stringify(existingImages);
             renderEditImages(existingImages);
-            preview.innerHTML = ''; // Clear preview after adding
-            document.getElementById('edit-product-images').value = ''; // Reset input
+            preview.innerHTML = '';
+            document.getElementById('edit-product-images').value = '';
             showToast(`✅ Added ${newImages.length} new image(s)`);
           }
         };
@@ -1114,7 +1164,6 @@
       });
     });
 
-    // Save edited product
     document.getElementById('edit-product-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('edit-product-btn');
@@ -1159,7 +1208,6 @@
       document.getElementById('edit-product-modal').classList.add('hidden');
     };
 
-    // Render admin products with Edit button
     function renderAdminProducts() {
       const grid = document.getElementById('admin-products-grid');
       const noProducts = document.getElementById('admin-no-products');
@@ -1202,8 +1250,13 @@
     window.filterProducts = function(category) {
       currentFilter = category;
       document.querySelectorAll('.filter-btn').forEach(btn => {
-        if (btn.dataset.filter === category) { btn.classList.add('bg-amber-600', 'text-white'); btn.classList.remove('bg-amber-100', 'text-amber-800'); }
-        else { btn.classList.remove('bg-amber-600', 'text-white'); btn.classList.add('bg-amber-100', 'text-amber-800'); }
+        if (btn.dataset.filter === category) { 
+          btn.classList.add('bg-amber-600', 'text-white'); 
+          btn.classList.remove('bg-amber-100', 'text-amber-800'); 
+        } else { 
+          btn.classList.remove('bg-amber-600', 'text-white'); 
+          btn.classList.add('bg-amber-100', 'text-amber-800'); 
+        }
       });
       renderProducts();
     };
@@ -1230,7 +1283,19 @@
       const btn = document.getElementById('submit-btn');
       if (!name || !phone) return;
       btn.disabled = true; btn.innerHTML = '<span class="animate-spin">⏳</span> Sending...';
-      const inquiryData = { type: 'inquiry', name: '', category: req, wood_type: '', price: '', images: [], description: '', customer_name: name, customer_phone: phone, customer_message: msg, created_at: new Date().toISOString() };
+      const inquiryData = { 
+        type: 'inquiry', 
+        name: '', 
+        category: req, 
+        wood_type: '', 
+        price: '', 
+        images: [], 
+        description: '', 
+        customer_name: name, 
+        customer_phone: phone, 
+        customer_message: msg, 
+        created_at: new Date().toISOString() 
+      };
       const result = await window.dataSdk.create(inquiryData);
       btn.disabled = false; btn.innerHTML = '<span>💬</span> Send Inquiry via WhatsApp';
       if (result.isOk) {
@@ -1241,7 +1306,15 @@
       } else showToast('❌ Failed. Please call.');
     });
 
-    function showToast(m) { const toast = document.getElementById('toast'); const msg = document.getElementById('toast-message'); if (msg) msg.textContent = m; if (toast) { toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 3000); } }
+    function showToast(m) { 
+      const toast = document.getElementById('toast'); 
+      const msg = document.getElementById('toast-message'); 
+      if (msg) msg.textContent = m; 
+      if (toast) { 
+        toast.classList.remove('hidden'); 
+        setTimeout(() => toast.classList.add('hidden'), 3000); 
+      } 
+    }
 
     initApp();
   </script>
