@@ -1,1334 +1,1805 @@
-<!DOCTYPE html>
-<html lang="hi" class="h-full">
-<head>
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anjali Furniture Works – Handcrafted Wooden Furniture</title>
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
-  <!-- Firebase SDK -->
- <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-
-  import { 
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    updateDoc,
-    deleteDoc,
-    doc
-  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyD4L-J0te53oZp7-A4peYGV25By42mL5P8",
-    authDomain: "anjalifurnitureworks-c03d2.firebaseapp.com",
-    projectId: "anjalifurnitureworks-c03d2",
-    storageBucket: "anjalifurnitureworks-c03d2.firebasestorage.app",
-    messagingSenderId: "3233497200",
-    appId: "1:3233497200:web:bc2924d5b484cc382c34b5"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Make global
-  window.db = db;
-  window.collection = collection;
-  window.addDoc = addDoc;
-  window.getDocs = getDocs;
-  window.updateDoc = updateDoc;
-  window.deleteDoc = deleteDoc;
-  window.docRef = doc;
-
-  console.log("🔥 Firestore Connected Successfully");
-</script>
-
-  <style>
-    /* core styles */
-    body { box-sizing: border-box; }
-    * { font-family: 'Poppins', sans-serif; }
-    .heading-font { font-family: 'Playfair Display', serif; }
-    .wood-pattern {
-      background: linear-gradient(135deg, #8B4513 0%, #A0522D 25%, #CD853F 50%, #A0522D 75%, #8B4513 100%);
+  <title>Anjali Furniture Works - Premium Wooden Furniture</title>
+  <meta name="description" content="Handcrafted wooden furniture by Anjali Furniture Works. Custom beds, wardrobes, doors, and more in Jaipur.">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            wood: {
+              50: '#fdf8f3',
+              100: '#f5e6d3',
+              200: '#e8cdb0',
+              300: '#d4a574',
+              400: '#c4864d',
+              500: '#a66b2c',
+              600: '#8b5a2b',
+              700: '#6d4423',
+              800: '#4a2c17',
+              900: '#2d1a0e'
+            },
+            cream: {
+              50: '#fffef9',
+              100: '#fefcf3',
+              200: '#fdf6e3',
+              300: '#f5edd6',
+              400: '#e8dfc4'
+            }
+          },
+          fontFamily: {
+            'display': ['Playfair Display', 'serif'],
+            'body': ['Poppins', 'sans-serif']
+          }
+        }
+      }
     }
-    .grain-overlay {
-      background-image: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.03) 2px,
-        rgba(0,0,0,0.03) 4px
-      );
+  </script>
+  <style>
+    html, body { height: 100%; }
+    .app-wrapper { height: 100%; overflow-y: auto; }
+    .gradient-wood {
+      background: linear-gradient(135deg, #8b5a2b 0%, #6d4423 50%, #4a2c17 100%);
+    }
+    .wood-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a574' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(139, 90, 43, 0.2);
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
     }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .animate-fade { animation: fadeIn 0.5s ease-out forwards; }
-    .card-hover { transition: all 0.3s ease; }
-    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(139,69,19,0.2); }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #d4a574;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
     .whatsapp-btn {
-      background: #25D366;
       animation: pulse 2s infinite;
     }
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
-      50% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
-    .line-clamp-2 {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    /* slideshow styles */
-    .slideshow-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-    .slide-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-    }
-    .slide-img.active {
-      display: block;
-    }
-    .slide-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
-      width: 28px;
-      height: 28px;
+    .swiper-button-next, .swiper-button-prev {
+      color: #d4a574 !important;
+      background: rgba(0,0,0,0.3);
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background 0.2s;
-      z-index: 10;
+      width: 40px !important;
+      height: 40px !important;
     }
-    .slide-btn:hover { background: rgba(0,0,0,0.8); }
-    .prev { left: 6px; }
-    .next { right: 6px; }
-    .dot-container {
-      position: absolute;
-      bottom: 6px;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      z-index: 10;
+    .swiper-button-next:after, .swiper-button-prev:after {
+      font-size: 20px !important;
     }
-    .dot {
-      width: 8px;
-      height: 8px;
-      background: rgba(255,255,255,0.6);
-      border-radius: 50%;
-      cursor: pointer;
+    .swiper-pagination-bullet-active {
+      background: #d4a574 !important;
     }
-    .dot.active { background: white; transform: scale(1.2); }
-    .gallery-preview-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
+    .image-upload-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 8px;
     }
-    .gallery-thumb {
+    .upload-preview {
       position: relative;
-      width: 80px;
-      height: 80px;
+      aspect-ratio: 1;
       border-radius: 8px;
-      border: 2px solid #ddd;
       overflow: hidden;
+      border: 2px solid #e8cdb0;
     }
-    .gallery-thumb img {
+    .upload-preview img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    .delivery-note {
-      background: #fef3c7;
-      border-left: 4px solid #b45309;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-      font-size: 0.9rem;
-    }
-    /* Image management styles */
-    .image-management {
-      border: 2px dashed #d1d5db;
-      border-radius: 0.5rem;
-      padding: 1rem;
-    }
-    .image-item {
-      position: relative;
-      transition: all 0.2s;
-    }
-    .image-item:hover .image-actions {
-      display: flex;
-    }
-    .image-actions {
+    .remove-image {
       position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-      border-radius: 0.5rem;
-    }
-    .image-action-btn {
-      width: 32px;
-      height: 32px;
+      top: 4px;
+      right: 4px;
+      background: rgba(239, 68, 68, 0.9);
+      color: white;
       border-radius: 50%;
+      width: 20px;
+      height: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
       cursor: pointer;
-      transition: all 0.2s;
+      font-size: 12px;
     }
-    .image-action-btn.delete {
-      background: #ef4444;
+    .price-tag {
+      background: linear-gradient(135deg, #8b5a2b 0%, #a66b2c 100%);
       color: white;
-    }
-    .image-action-btn.delete:hover {
-      background: #dc2626;
-      transform: scale(1.1);
-    }
-    .image-action-btn.set-cover {
-      background: #10b981;
-      color: white;
-    }
-    .image-action-btn.set-cover:hover {
-      background: #059669;
-      transform: scale(1.1);
-    }
-    .cover-badge {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      background: #10b981;
-      color: white;
-      font-size: 0.7rem;
-      padding: 2px 6px;
-      border-radius: 999px;
-      z-index: 5;
-    }
-    .edit-product-btn {
-      background: #3b82f6;
-      color: white;
-    }
-    .edit-product-btn:hover {
-      background: #2563eb;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 1rem;
+      display: inline-block;
     }
   </style>
-</head>
-<body class="h-full bg-amber-50 text-gray-800">
-  <div id="app" class="h-full w-full overflow-auto">
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="fixed inset-0 bg-amber-900 flex items-center justify-center z-50">
-      <div class="text-center text-white">
-        <div class="w-16 h-16 border-4 border-amber-200 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p class="text-xl">Loading...</p>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-cream-100 font-body">
+  <div class="app-wrapper wood-pattern"><!-- Navigation -->
+   <nav id="navbar" class="sticky top-0 z-50 bg-wood-800/95 backdrop-blur-sm shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex justify-between items-center h-16 md:h-20">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+       <div class="w-10 h-10 md:w-12 md:h-12 bg-wood-300 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 md:w-8 md:h-8 text-wood-800" fill="currentColor" viewbox="0 0 24 24"><path d="M12 3L2 12h3v9h6v-6h2v6h6v-9h3L12 3z" />
+        </svg>
+       </div>
+       <div class="hidden sm:block">
+        <h1 id="nav-shop-name" class="text-cream-100 font-display font-bold text-lg md:text-xl">Anjali Furniture</h1>
+        <p class="text-wood-300 text-xs">Premium Wooden Crafts</p>
+       </div>
+      </div><!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-8"><button onclick="navigateTo('home')" class="nav-link text-cream-100 hover:text-wood-300 transition-colors font-medium">Home</button> <button onclick="navigateTo('products')" class="nav-link text-cream-100 hover:text-wood-300 transition-colors font-medium">Products</button> <button onclick="navigateTo('woods')" class="nav-link text-cream-100 hover:text-wood-300 transition-colors font-medium">Wood Types</button> <button onclick="navigateTo('contact')" class="nav-link text-cream-100 hover:text-wood-300 transition-colors font-medium">Contact</button> <button onclick="navigateTo('admin-login')" class="bg-wood-500 hover:bg-wood-400 text-cream-100 px-4 py-2 rounded-lg transition-colors font-medium text-sm">Admin</button>
+      </div><!-- Mobile Menu Button --> <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-cream-100 p-2">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+       </svg></button>
+     </div><!-- Mobile Menu -->
+     <div id="mobile-menu" class="hidden md:hidden pb-4">
+      <div class="flex flex-col gap-2"><button onclick="navigateTo('home'); toggleMobileMenu();" class="text-cream-100 hover:bg-wood-700 px-4 py-3 rounded-lg text-left transition-colors">Home</button> <button onclick="navigateTo('products'); toggleMobileMenu();" class="text-cream-100 hover:bg-wood-700 px-4 py-3 rounded-lg text-left transition-colors">Products</button> <button onclick="navigateTo('woods'); toggleMobileMenu();" class="text-cream-100 hover:bg-wood-700 px-4 py-3 rounded-lg text-left transition-colors">Wood Types</button> <button onclick="navigateTo('contact'); toggleMobileMenu();" class="text-cream-100 hover:bg-wood-700 px-4 py-3 rounded-lg text-left transition-colors">Contact</button> <button onclick="navigateTo('admin-login'); toggleMobileMenu();" class="bg-wood-500 hover:bg-wood-400 text-cream-100 px-4 py-3 rounded-lg text-center transition-colors mt-2">Admin Login</button>
       </div>
+     </div>
     </div>
-
-    <!-- CUSTOMER VIEW -->
-    <div id="customer-view" class="hidden">
-      <!-- Header -->
-      <header class="wood-pattern text-white relative overflow-hidden">
-        <div class="grain-overlay absolute inset-0"></div>
-        <div class="relative z-10 max-w-7xl mx-auto px-4 py-6">
-          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="text-center md:text-left">
-              <h1 id="header-shop-name" class="heading-font text-3xl md:text-4xl font-bold">🪵 Anjali Furniture Works</h1>
-              <p id="header-tagline" class="text-amber-200 mt-1">Quality Handcrafted Wooden Furniture Since 1995</p>
-            </div>
-            <div class="flex items-center gap-4">
-              <button onclick="showSignInPage()" class="bg-amber-800 hover:bg-amber-900 px-4 py-2 rounded-lg text-sm transition-colors"> 🔐 Admin Sign In </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <!-- Hero Section -->
-      <section class="bg-gradient-to-b from-amber-800 to-amber-700 text-white py-16 px-4">
-        <div class="max-w-4xl mx-auto text-center">
-          <h2 class="heading-font text-4xl md:text-5xl font-bold mb-4">Crafting Dreams in Wood</h2>
-          <p class="text-xl text-amber-200 mb-8">Custom Beds • Wardrobes • Almirahs • Racks • All Wooden Furniture</p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a href="#products" class="bg-white text-amber-800 px-8 py-3 rounded-full font-semibold hover:bg-amber-100 transition-colors"> View Our Work </a>
-            <a href="#inquiry" class="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-amber-800 transition-colors"> Get Quote </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact Info Bar – ALL PHONE NUMBERS UPDATED TO 8386076109 -->
-      <section class="bg-amber-900 text-white py-4 px-4">
-        <div class="max-w-7xl mx-auto flex flex-wrap justify-center items-center gap-6 text-sm">
-          <a href="tel:8386076109" class="flex items-center gap-2 hover:text-amber-200"> 📞 8386076109 </a>
-          <a href="tel:8386076109" class="flex items-center gap-2 hover:text-amber-200"> 📞 8386076109 </a>
-          <a href="https://wa.me/918386076109" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-green-300"> 💬 WhatsApp </a>
-          <span class="flex items-center gap-2"> 📍 Metrocity, Mansarovar, Jaipur </span>
-        </div>
-        <!-- BILINGUAL DELIVERY NOTE -->
-        <div class="max-w-7xl mx-auto mt-3 delivery-note text-amber-900">
-          <span class="font-semibold">🚚 डिलीवरी केवल जयपुर में | Delivery only in Jaipur</span>
-        </div>
-      </section>
-
-      <!-- Category Filter -->
-      <section class="py-8 px-4 bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto">
-          <div class="flex flex-wrap justify-center gap-3">
-            <button onclick="filterProducts('all')" class="filter-btn active px-6 py-2 rounded-full bg-amber-600 text-white font-medium transition-all" data-filter="all"> All Products </button>
-            <button onclick="filterProducts('bed')" class="filter-btn px-6 py-2 rounded-full bg-amber-100 text-amber-800 font-medium hover:bg-amber-200 transition-all" data-filter="bed"> 🛏️ Beds </button>
-            <button onclick="filterProducts('wardrobe')" class="filter-btn px-6 py-2 rounded-full bg-amber-100 text-amber-800 font-medium hover:bg-amber-200 transition-all" data-filter="wardrobe"> 🚪 Wardrobes </button>
-            <button onclick="filterProducts('almirah')" class="filter-btn px-6 py-2 rounded-full bg-amber-100 text-amber-800 font-medium hover:bg-amber-200 transition-all" data-filter="almirah"> 🗄️ Almirahs </button>
-            <button onclick="filterProducts('rack')" class="filter-btn px-6 py-2 rounded-full bg-amber-100 text-amber-800 font-medium hover:bg-amber-200 transition-all" data-filter="rack"> 📚 Racks </button>
-            <button onclick="filterProducts('other')" class="filter-btn px-6 py-2 rounded-full bg-amber-100 text-amber-800 font-medium hover:bg-amber-200 transition-all" data-filter="other"> 🪑 Other </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Products Gallery with Slideshow -->
-      <section id="products" class="py-12 px-4">
-        <div class="max-w-7xl mx-auto">
-          <h2 class="heading-font text-3xl font-bold text-center text-amber-900 mb-8">Our Furniture Collection</h2>
-          <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
-          <div id="no-products" class="hidden text-center py-16">
-            <div class="text-6xl mb-4">🪵</div>
-            <p class="text-xl text-gray-500">No products available yet. Check back soon!</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Wood Types Section -->
-      <section id="woods" class="py-12 px-4 bg-amber-100">
-        <div class="max-w-7xl mx-auto">
-          <h2 class="heading-font text-3xl font-bold text-center text-amber-900 mb-4">Premium Wood Types We Use</h2>
-          <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">We use only the finest quality woods to ensure durability and beauty in every piece of furniture.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white rounded-xl p-6 text-center card-hover shadow-md">
-              <div class="w-16 h-16 bg-amber-800 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl">🌳</div>
-              <h3 class="font-bold text-amber-900 text-lg">Sheesham (Rosewood)</h3>
-              <p class="text-gray-600 text-sm mt-2">Premium quality, termite resistant, beautiful grain pattern</p>
-            </div>
-            <div class="bg-white rounded-xl p-6 text-center card-hover shadow-md">
-              <div class="w-16 h-16 bg-yellow-700 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl">🪵</div>
-              <h3 class="font-bold text-amber-900 text-lg">Teak Wood (Sagwan)</h3>
-              <p class="text-gray-600 text-sm mt-2">Most durable, water resistant, ideal for all furniture</p>
-            </div>
-            <div class="bg-white rounded-xl p-6 text-center card-hover shadow-md">
-              <div class="w-16 h-16 bg-orange-800 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl">🌲</div>
-              <h3 class="font-bold text-amber-900 text-lg">Mango Wood</h3>
-              <p class="text-gray-600 text-sm mt-2">Eco-friendly, unique patterns, cost-effective</p>
-            </div>
-            <div class="bg-white rounded-xl p-6 text-center card-hover shadow-md">
-              <div class="w-16 h-16 bg-red-900 rounded-full mx-auto mb-4 flex items-center justify-center text-2xl">🏔️</div>
-              <h3 class="font-bold text-amber-900 text-lg">Sal Wood</h3>
-              <p class="text-gray-600 text-sm mt-2">Heavy duty, extremely strong, long-lasting</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Inquiry Form -->
-      <section id="inquiry" class="py-12 px-4 bg-gradient-to-b from-amber-700 to-amber-800">
-        <div class="max-w-2xl mx-auto">
-          <div class="bg-white rounded-2xl shadow-2xl p-8">
-            <h2 class="heading-font text-3xl font-bold text-center text-amber-900 mb-2">Get Free Quote</h2>
-            <p class="text-center text-gray-600 mb-6">Fill the form below and we'll contact you on WhatsApp!</p>
-            <form id="inquiry-form" class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
-                <input type="text" id="customer-name" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="आपका नाम">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-                <input type="tel" id="customer-phone" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="Mobile Number">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">What do you need?</label>
-                <select id="customer-requirement" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none">
-                  <option value="">Select Category</option>
-                  <option value="Bed">🛏️ Bed</option>
-                  <option value="Wardrobe">🚪 Wardrobe</option>
-                  <option value="Almirah">🗄️ Almirah</option>
-                  <option value="Rack">📚 Rack / Shelf</option>
-                  <option value="Sofa">🛋️ Sofa Set</option>
-                  <option value="Table">🪑 Table</option>
-                  <option value="Other">Other Furniture</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
-                <textarea id="customer-message" rows="3" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="Tell us about your requirements..."></textarea>
-              </div>
-              <button type="submit" id="submit-btn" class="w-full whatsapp-btn text-white py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 hover:bg-green-600 transition-colors">
-                <span>💬</span> Send Inquiry via WhatsApp
-              </button>
-            </form>
-            <p class="text-center text-gray-500 text-sm mt-4">Your inquiry will be sent directly to our WhatsApp!</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- About Section -->
-      <section class="py-12 px-4 bg-white">
-        <div class="max-w-4xl mx-auto text-center">
-          <h2 class="heading-font text-3xl font-bold text-amber-900 mb-4">About Anjali Furniture Works</h2>
-          <p class="text-gray-600 mb-8 leading-relaxed">With over 25+ years of experience in crafting beautiful wooden furniture, we take pride in delivering quality craftsmanship. Every piece of furniture is handcrafted with precision and care by our skilled artisans.</p>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div class="p-4">
-              <div class="text-4xl font-bold text-amber-600">25+</div>
-              <div class="text-gray-600">Years Experience</div>
-            </div>
-            <div class="p-4">
-              <div class="text-4xl font-bold text-amber-600">1000+</div>
-              <div class="text-gray-600">Happy Customers</div>
-            </div>
-            <div class="p-4">
-              <div class="text-4xl font-bold text-amber-600">100%</div>
-              <div class="text-gray-600">Quality Wood</div>
-            </div>
-            <div class="p-4">
-              <div class="text-4xl font-bold text-amber-600">Free</div>
-              <div class="text-gray-600">Home Delivery</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Footer – ALL PHONE NUMBERS UPDATED TO 8386076109, Owner Dhanraj Jagid -->
-      <footer class="bg-amber-900 text-white py-8 px-4">
-        <div class="max-w-7xl mx-auto">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 class="heading-font text-xl font-bold mb-4">📍 Visit Our Shop</h3>
-              <p class="text-amber-200">138, Metrocity<br> Swarn Garden Wali Gali<br> Manyawas, Mansarovar<br> Jaipur, Rajasthan</p>
-            </div>
-            <div>
-              <h3 class="heading-font text-xl font-bold mb-4">📞 Contact Us</h3>
-              <p class="text-amber-200"><span id="footer-owner">Dhanraj Jagid</span><br><a href="tel:8386076109" class="hover:text-white">📱 8386076109</a><br><a href="tel:8386076109" class="hover:text-white">📱 8386076109</a></p>
-              <div class="mt-3 text-xs text-amber-300 border-t border-amber-700 pt-2">
-                🚚 डिलीवरी केवल जयपुर में | Delivery only in Jaipur
-              </div>
-            </div>
-            <div>
-              <h3 class="heading-font text-xl font-bold mb-4">⏰ Working Hours</h3>
-              <p class="text-amber-200">Monday - Saturday<br> 9:00 AM - 8:00 PM<br> Sunday: By Appointment</p>
-            </div>
-          </div>
-          <div class="border-t border-amber-700 mt-8 pt-6 text-center text-amber-300">
-            <p>© 2024 Anjali Furniture Works. All Rights Reserved.</p>
-          </div>
-        </div>
-      </footer>
-
-      <!-- Floating WhatsApp Button – UPDATED TO 8386076109 -->
-      <a href="https://wa.me/918386076109?text=Hello! I'm interested in your furniture. Please share more details." target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 whatsapp-btn w-16 h-16 rounded-full flex items-center justify-center text-white text-3xl shadow-lg z-40 hover:scale-110 transition-transform"> 💬 </a>
-    </div>
-
-    <!-- ========== DEDICATED SIGN IN PAGE (Phone + Security Code) ========== -->
-    <div id="signin-page" class="hidden fixed inset-0 bg-amber-50 z-50 overflow-auto">
-      <div class="min-h-full flex items-center justify-center py-12 px-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
-          <button onclick="hideSignInPage()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">×</button>
-          <div class="text-center mb-6">
-            <div class="text-5xl mb-2">🔐</div>
-            <h2 class="heading-font text-3xl font-bold text-amber-900">Admin Sign In</h2>
-            <p class="text-gray-600 mt-1">Enter your registered phone & security code</p>
-          </div>
-          <form id="signin-form" class="space-y-5">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">📱 Admin Phone Number</label>
-              <input type="tel" id="signin-phone" value="8386076109" readonly class="w-full px-4 py-3 bg-gray-100 border-2 border-amber-200 rounded-lg text-gray-700 font-medium">
-              <p class="text-xs text-gray-500 mt-1">Use registered admin number</p>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">🔑 Security Code</label>
-              <input type="password" id="signin-code" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="Enter code">
-            </div>
-            <div id="signin-error" class="hidden text-red-600 text-sm text-center"></div>
-            <button type="submit" id="signin-btn" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-lg font-semibold text-lg transition-colors"> ➤ Verify & Continue </button>
-          </form>
-          <div class="mt-6 text-center text-sm text-gray-500">
-            ⚠️ Only authorized personnel. Code required.
-          </div>
-        </div>
+   </nav><!-- Main Content Area -->
+   <main id="main-content" class="min-h-screen"><!-- Home Page -->
+    <section id="page-home" class="page-section"><!-- Hero Section -->
+     <div class="gradient-wood relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10">
+       <svg class="w-full h-full" viewbox="0 0 100 100" preserveaspectratio="none"><defs>
+         <pattern id="grain" patternunits="userSpaceOnUse" width="100" height="100">
+          <path d="M0 50 Q25 30 50 50 T100 50" fill="none" stroke="#d4a574" stroke-width="0.5" />
+          <path d="M0 70 Q25 50 50 70 T100 70" fill="none" stroke="#d4a574" stroke-width="0.3" />
+          <path d="M0 30 Q25 10 50 30 T100 30" fill="none" stroke="#d4a574" stroke-width="0.4" />
+         </pattern>
+        </defs> <rect width="100" height="100" fill="url(#grain)" />
+       </svg>
       </div>
-    </div>
-
-    <!-- ADMIN LOGIN MODAL (email/password + SETUP SECTION) -->
-    <div id="admin-login-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-fade relative">
-        <h2 class="heading-font text-2xl font-bold text-center text-amber-900 mb-6">🔐 Admin Login</h2>
-        <form id="login-form" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-            <input type="email" id="admin-email" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="admin@example.com">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input type="password" id="admin-password" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="Enter password">
-          </div>
-          <div id="login-error" class="hidden text-red-600 text-sm text-center"></div>
-          <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold transition-colors"> Login </button>
-        </form>
-        
-        <!-- SETUP SECTION – First time admin account creation -->
-        <div id="setup-section" class="mt-6 pt-6 border-t border-gray-200">
-          <p class="text-sm text-gray-600 text-center mb-4">First time? Set up admin credentials:</p>
-          <button onclick="showSetupForm()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-lg font-medium transition-colors"> ⚙️ Setup Admin Account </button>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32 relative z-10">
+       <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div class="text-center md:text-left fade-in">
+         <p class="text-wood-300 font-medium mb-2 tracking-wider text-sm">HANDCRAFTED EXCELLENCE</p>
+         <h1 id="hero-shop-name" class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-cream-100 mb-4 leading-tight">Anjali Furniture Works</h1>
+         <p id="hero-tagline" class="text-wood-200 text-lg md:text-xl mb-8 leading-relaxed">Creating timeless wooden masterpieces with passion and precision since generations</p>
+         <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"><button onclick="navigateTo('products')" class="bg-wood-300 hover:bg-wood-200 text-wood-900 px-8 py-4 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl"> Explore Our Work </button> <a id="hero-whatsapp-btn" href="https://wa.me/918386076109?text=Hi! I'm interested in your furniture work." target="_blank" rel="noopener noreferrer" class="whatsapp-btn bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+           <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+           </svg> WhatsApp Us </a>
+         </div>
         </div>
-        
-        <button onclick="hideAdminLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">×</button>
+        <div class="relative fade-in" style="animation-delay: 0.2s;">
+         <div class="bg-wood-700/30 rounded-2xl p-4 md:p-6 backdrop-blur-sm border border-wood-600/30">
+          <div class="grid grid-cols-2 gap-3 md:gap-4">
+           <div class="bg-wood-600/50 rounded-xl aspect-square flex items-center justify-center">
+            <svg class="w-16 h-16 md:w-20 md:h-20 text-wood-300" fill="currentColor" viewbox="0 0 24 24"><path d="M19 7h-3V6a4 4 0 00-8 0v1H5a1 1 0 00-1 1v12a2 2 0 002 2h12a2 2 0 002-2V8a1 1 0 00-1-1zm-9-1a2 2 0 114 0v1h-4V6zm8 14H6V9h2v1a1 1 0 002 0V9h4v1a1 1 0 002 0V9h2v11z" />
+            </svg>
+           </div>
+           <div class="bg-wood-600/50 rounded-xl aspect-square flex items-center justify-center">
+            <svg class="w-16 h-16 md:w-20 md:h-20 text-wood-300" fill="currentColor" viewbox="0 0 24 24"><path d="M4 2h16a1 1 0 011 1v18a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1zm1 2v16h14V4H5zm2 2h10v2H7V6zm0 4h10v2H7v-2zm0 4h6v2H7v-2z" />
+            </svg>
+           </div>
+           <div class="bg-wood-600/50 rounded-xl aspect-square flex items-center justify-center">
+            <svg class="w-16 h-16 md:w-20 md:h-20 text-wood-300" fill="currentColor" viewbox="0 0 24 24"><path d="M12 3L2 12h3v9h14v-9h3L12 3zm0 2.84L18 11v8H6v-8l6-5.16z" />
+            </svg>
+           </div>
+           <div class="bg-wood-600/50 rounded-xl aspect-square flex items-center justify-center">
+            <svg class="w-16 h-16 md:w-20 md:h-20 text-wood-300" fill="currentColor" viewbox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z" />
+            </svg>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
       </div>
-    </div>
-
-    <!-- ADMIN SETUP MODAL -->
-    <div id="admin-setup-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-fade relative">
-        <h2 class="heading-font text-2xl font-bold text-center text-amber-900 mb-6">⚙️ Setup Admin Account</h2>
-        <form id="setup-form" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Admin Email</label>
-            <input type="email" id="setup-email" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="your-email@example.com">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Set Password</label>
-            <input type="password" id="setup-password" required minlength="6" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="Minimum 6 characters">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-            <input type="password" id="setup-confirm" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="Repeat password">
-          </div>
-          <div id="setup-error" class="hidden text-red-600 text-sm text-center"></div>
-          <button type="submit" id="setup-btn" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-colors"> Create Admin Account </button>
-        </form>
-        <button onclick="hideSetupForm()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">×</button>
+     </div><!-- Features Section -->
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+      <div class="text-center mb-12">
+       <h2 class="font-display text-3xl md:text-4xl font-bold text-wood-800 mb-4">Why Choose Us?</h2>
+       <p class="text-wood-600 max-w-2xl mx-auto">Decades of craftsmanship excellence combined with modern designs</p>
       </div>
-    </div>
-
-    <!-- ADMIN PANEL -->
-    <div id="admin-panel" class="hidden">
-      <!-- Admin Header -->
-      <header class="bg-amber-900 text-white py-4 px-4">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div>
-            <h1 class="heading-font text-2xl font-bold">🔧 Admin Panel</h1>
-            <p class="text-amber-300 text-sm">Anjali Furniture Works</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+       <div class="bg-white rounded-2xl p-6 shadow-lg card-hover text-center">
+        <div class="w-16 h-16 bg-wood-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+         <svg class="w-8 h-8 text-wood-600" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+         </svg>
+        </div>
+        <h3 class="font-display font-semibold text-wood-800 mb-2">Premium Quality</h3>
+        <p class="text-wood-600 text-sm">Only the finest wood materials selected for durability</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-lg card-hover text-center">
+        <div class="w-16 h-16 bg-wood-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+         <svg class="w-8 h-8 text-wood-600" fill="currentColor" viewbox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z" />
+         </svg>
+        </div>
+        <h3 class="font-display font-semibold text-wood-800 mb-2">Expert Craftsmen</h3>
+        <p class="text-wood-600 text-sm">Skilled artisans with generations of expertise</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-lg card-hover text-center">
+        <div class="w-16 h-16 bg-wood-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+         <svg class="w-8 h-8 text-wood-600" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5zm0 7c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM3 21.5h8v-8H3v8zm2-6h4v4H5v-4z" />
+         </svg>
+        </div>
+        <h3 class="font-display font-semibold text-wood-800 mb-2">Custom Designs</h3>
+        <p class="text-wood-600 text-sm">Tailored solutions for your unique requirements</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-lg card-hover text-center">
+        <div class="w-16 h-16 bg-wood-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+         <svg class="w-8 h-8 text-wood-600" fill="currentColor" viewbox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z" />
+         </svg>
+        </div>
+        <h3 class="font-display font-semibold text-wood-800 mb-2">On-Time Delivery</h3>
+        <p class="text-wood-600 text-sm">Committed to delivering within promised timelines</p>
+       </div>
+      </div>
+     </div><!-- Categories Preview -->
+     <div class="bg-wood-800 py-16 md:py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+       <div class="text-center mb-12">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-cream-100 mb-4">Our Specializations</h2>
+        <p class="text-wood-300 max-w-2xl mx-auto">From classic to contemporary, we craft it all</p>
+       </div>
+       <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4"><button onclick="navigateTo('products'); setTimeout(() => filterProducts('Beds'), 100);" class="bg-wood-700/50 hover:bg-wood-600/50 rounded-xl p-4 text-center transition-all group">
+         <div class="text-3xl mb-2">
+          🛏️
+         </div><p class="text-cream-100 text-sm font-medium group-hover:text-wood-300 transition-colors">Beds</p></button> <button onclick="navigateTo('products'); setTimeout(() => filterProducts('Wardrobes'), 100);" class="bg-wood-700/50 hover:bg-wood-600/50 rounded-xl p-4 text-center transition-all group">
+         <div class="text-3xl mb-2">
+          🚪
+         </div><p class="text-cream-100 text-sm font-medium group-hover:text-wood-300 transition-colors">Wardrobes</p></button> <button onclick="navigateTo('products'); setTimeout(() => filterProducts('Almirah'), 100);" class="bg-wood-700/50 hover:bg-wood-600/50 rounded-xl p-4 text-center transition-all group">
+         <div class="text-3xl mb-2">
+          🗄️
+         </div><p class="text-cream-100 text-sm font-medium group-hover:text-wood-300 transition-colors">Almirah</p></button> <button onclick="navigateTo('products'); setTimeout(() => filterProducts('Racks'), 100);" class="bg-wood-700/50 hover:bg-wood-600/50 rounded-xl p-4 text-center transition-all group">
+         <div class="text-3xl mb-2">
+          📚
+         </div><p class="text-cream-100 text-sm font-medium group-hover:text-wood-300 transition-colors">Racks</p></button> <button onclick="navigateTo('products'); setTimeout(() => filterProducts('Doors'), 100);" class="bg-wood-700/50 hover:bg-wood-600/50 rounded-xl p-4 text-center transition-all group">
+         <div class="text-3xl mb-2">
+          🚪
+         </div><p class="text-cream-100 text-sm font-medium group-hover:text-wood-300 transition-colors">Doors</p></button> <button onclick="navigateTo('products'); setTimeout(() => filterProducts('Windows'), 100);" class="bg-wood-700/50 hover:bg-wood-600/50 rounded-xl p-4 text-center transition-all group">
+         <div class="text-3xl mb-2">
+          🪟
+         </div><p class="text-cream-100 text-sm font-medium group-hover:text-wood-300 transition-colors">Windows</p></button> <button onclick="navigateTo('products'); setTimeout(() => filterProducts('Custom Work'), 100);" class="bg-wood-700/50 hover:bg-wood-600/50 rounded-xl p-4 text-center transition-all group">
+         <div class="text-3xl mb-2">
+          ✨
+         </div><p class="text-cream-100 text-sm font-medium group-hover:text-wood-300 transition-colors">Custom</p></button>
+       </div>
+       <div class="text-center mt-10"><button onclick="navigateTo('products')" class="bg-wood-300 hover:bg-wood-200 text-wood-900 px-8 py-3 rounded-xl font-semibold transition-all"> View All Products → </button>
+       </div>
+      </div>
+     </div><!-- Contact Info Section -->
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+      <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+       <div class="grid md:grid-cols-2">
+        <div class="gradient-wood p-8 md:p-12">
+         <h2 class="font-display text-3xl font-bold text-cream-100 mb-6">Get In Touch</h2>
+         <div class="space-y-6">
+          <div class="flex items-start gap-4">
+           <div class="w-12 h-12 bg-wood-600/50 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-wood-300" fill="currentColor" viewbox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+            </svg>
+           </div>
+           <div>
+            <p class="text-wood-300 text-sm mb-1">Phone</p><a id="contact-phone-link" href="tel:8386076109" class="text-cream-100 font-medium text-lg hover:text-wood-300 transition-colors">8386076109</a>
+           </div>
           </div>
+          <div class="flex items-start gap-4">
+           <div class="w-12 h-12 bg-wood-600/50 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-wood-300" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+            </svg>
+           </div>
+           <div>
+            <p class="text-wood-300 text-sm mb-1">Address</p>
+            <p id="contact-address-text" class="text-cream-100 font-medium">138, Metrocity, Swarn Garden Wali Gali, Manyawas, Mansarovar, Jaipur</p>
+           </div>
+          </div>
+          <div class="flex items-start gap-4">
+           <div class="w-12 h-12 bg-wood-600/50 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-wood-300" fill="currentColor" viewbox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+            </svg>
+           </div>
+           <div>
+            <p class="text-wood-300 text-sm mb-1">Working Hours</p>
+            <p class="text-cream-100 font-medium">Mon - Sat: 9:00 AM - 7:00 PM</p>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="p-8 md:p-12 flex items-center justify-center">
+         <div class="text-center">
+          <div class="w-24 h-24 bg-wood-100 rounded-full flex items-center justify-center mx-auto mb-6">
+           <svg class="w-12 h-12 text-wood-600" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+           </svg>
+          </div>
+          <h3 class="font-display text-2xl font-bold text-wood-800 mb-3">Ready to Start?</h3>
+          <p class="text-wood-600 mb-6">Share your requirements and get a free quote</p><button onclick="navigateTo('contact')" class="bg-wood-600 hover:bg-wood-500 text-cream-100 px-8 py-3 rounded-xl font-semibold transition-all"> Request Quote </button>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- Products Page -->
+    <section id="page-products" class="page-section hidden">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div class="text-center mb-8">
+       <h1 class="font-display text-3xl md:text-4xl font-bold text-wood-800 mb-4">Our Products</h1>
+       <p class="text-wood-600 max-w-2xl mx-auto">Browse our collection of handcrafted wooden furniture</p>
+      </div><!-- Search & Filter -->
+      <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-8">
+       <div class="flex flex-col md:flex-row gap-4 items-center">
+        <div class="relative flex-1 w-full"><input type="text" id="product-search" placeholder="Search products..." class="w-full pl-12 pr-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" oninput="searchProducts(this.value)">
+         <svg class="w-5 h-5 text-wood-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+         </svg>
+        </div>
+        <div class="flex flex-wrap gap-2 justify-center"><button onclick="filterProducts('All')" class="filter-btn active px-4 py-2 rounded-lg bg-wood-600 text-cream-100 text-sm font-medium transition-all" data-category="All">All</button> <button onclick="filterProducts('Beds')" class="filter-btn px-4 py-2 rounded-lg bg-wood-100 text-wood-700 hover:bg-wood-200 text-sm font-medium transition-all" data-category="Beds">Beds</button> <button onclick="filterProducts('Wardrobes')" class="filter-btn px-4 py-2 rounded-lg bg-wood-100 text-wood-700 hover:bg-wood-200 text-sm font-medium transition-all" data-category="Wardrobes">Wardrobes</button> <button onclick="filterProducts('Almirah')" class="filter-btn px-4 py-2 rounded-lg bg-wood-100 text-wood-700 hover:bg-wood-200 text-sm font-medium transition-all" data-category="Almirah">Almirah</button> <button onclick="filterProducts('Racks')" class="filter-btn px-4 py-2 rounded-lg bg-wood-100 text-wood-700 hover:bg-wood-200 text-sm font-medium transition-all" data-category="Racks">Racks</button> <button onclick="filterProducts('Doors')" class="filter-btn px-4 py-2 rounded-lg bg-wood-100 text-wood-700 hover:bg-wood-200 text-sm font-medium transition-all" data-category="Doors">Doors</button> <button onclick="filterProducts('Windows')" class="filter-btn px-4 py-2 rounded-lg bg-wood-100 text-wood-700 hover:bg-wood-200 text-sm font-medium transition-all" data-category="Windows">Windows</button> <button onclick="filterProducts('Custom Work')" class="filter-btn px-4 py-2 rounded-lg bg-wood-100 text-wood-700 hover:bg-wood-200 text-sm font-medium transition-all" data-category="Custom Work">Custom</button>
+        </div>
+       </div>
+      </div><!-- Products Grid -->
+      <div id="products-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"><!-- Products will be rendered here -->
+      </div><!-- Empty State -->
+      <div id="products-empty" class="hidden text-center py-16">
+       <div class="w-20 h-20 bg-wood-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-wood-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+        </svg>
+       </div>
+       <h3 class="font-display text-xl font-semibold text-wood-800 mb-2">No Products Found</h3>
+       <p class="text-wood-600 mb-6">Products will appear here once added by admin</p>
+      </div>
+     </div>
+    </section><!-- Woods Page -->
+    <section id="page-woods" class="page-section hidden">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div class="text-center mb-12">
+       <h1 class="font-display text-3xl md:text-4xl font-bold text-wood-800 mb-4">Wood Types We Use</h1>
+       <p class="text-wood-600 max-w-2xl mx-auto">Learn about the premium quality woods we use in our furniture</p>
+      </div>
+      <div id="woods-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Woods will be rendered here -->
+      </div>
+     </div>
+    </section><!-- Contact Page -->
+    <section id="page-contact" class="page-section hidden">
+     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div class="text-center mb-8">
+       <h1 class="font-display text-3xl md:text-4xl font-bold text-wood-800 mb-4">Request a Quote</h1>
+       <p class="text-wood-600 max-w-2xl mx-auto">Fill out the form below and we'll get back to you within 24 hours</p>
+      </div>
+      <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+       <div class="grid lg:grid-cols-5">
+        <div class="lg:col-span-2 gradient-wood p-8">
+         <h2 class="font-display text-2xl font-bold text-cream-100 mb-6">Contact Info</h2>
+         <div class="space-y-6">
           <div class="flex items-center gap-4">
-            <button onclick="showCustomerView()" class="bg-amber-700 hover:bg-amber-800 px-4 py-2 rounded-lg transition-colors"> 👁️ View Website </button>
-            <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors"> 🚪 Logout </button>
+           <div class="w-10 h-10 bg-wood-600/50 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-wood-300" fill="currentColor" viewbox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+            </svg>
+           </div><a id="form-phone-link" href="tel:8386076109" class="text-cream-100 hover:text-wood-300 transition-colors">8386076109</a>
           </div>
+          <div class="flex items-start gap-4">
+           <div class="w-10 h-10 bg-wood-600/50 rounded-lg flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-wood-300" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+            </svg>
+           </div>
+           <p id="form-address-text" class="text-cream-100 text-sm">138, Metrocity, Swarn Garden Wali Gali, Manyawas, Mansarovar, Jaipur</p>
+          </div>
+         </div>
+         <div class="mt-8 pt-8 border-t border-wood-600/30">
+          <p class="text-wood-300 text-sm mb-4">Or reach us directly on WhatsApp:</p><a id="form-whatsapp-btn" href="https://wa.me/918386076109?text=Hi! I want to inquire about furniture." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-xl font-medium transition-all">
+           <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+           </svg> WhatsApp Us </a>
+         </div>
         </div>
-      </header>
-
-      <!-- Admin Tabs -->
-      <div class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto flex flex-wrap">
-          <button onclick="showAdminTab('products')" class="admin-tab active px-6 py-4 font-medium text-amber-600 border-b-2 border-amber-600" data-tab="products"> 📦 Products </button>
-          <button onclick="showAdminTab('inquiries')" class="admin-tab px-6 py-4 font-medium text-gray-500 hover:text-amber-600" data-tab="inquiries"> 📋 Customer Inquiries </button>
-          <button onclick="showAdminTab('add')" class="admin-tab px-6 py-4 font-medium text-gray-500 hover:text-amber-600" data-tab="add"> ➕ Add Product </button>
+        <div class="lg:col-span-3 p-8">
+         <form id="contact-form" onsubmit="submitContactForm(event)">
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+           <div><label for="customer-name" class="block text-sm font-medium text-wood-700 mb-2">Full Name *</label> <input type="text" id="customer-name" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="Your name">
+           </div>
+           <div><label for="customer-phone" class="block text-sm font-medium text-wood-700 mb-2">Phone Number *</label> <input type="tel" id="customer-phone" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="Your phone number">
+           </div>
+          </div>
+          <div class="mb-4"><label for="customer-address" class="block text-sm font-medium text-wood-700 mb-2">Address *</label> <input type="text" id="customer-address" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="Your address">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+           <div><label for="work-type" class="block text-sm font-medium text-wood-700 mb-2">Work Type *</label> <select id="work-type" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all"> <option value="">Select work type</option> <option value="Beds">Beds</option> <option value="Wardrobes">Wardrobes</option> <option value="Almirah">Almirah</option> <option value="Racks">Racks</option> <option value="Doors">Doors</option> <option value="Windows">Windows</option> <option value="Custom Work">Custom Work</option> </select>
+           </div>
+           <div><label for="wood-preference" class="block text-sm font-medium text-wood-700 mb-2">Wood Preference</label> <select id="wood-preference" class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all"> <option value="">Select wood type</option> <option value="Teak Wood">Teak Wood</option> <option value="Sheesham">Sheesham</option> <option value="Sal Wood">Sal Wood</option> <option value="Plywood">Plywood</option> <option value="MDF">MDF</option> <option value="Not Sure">Not Sure</option> </select>
+           </div>
+          </div>
+          <div class="mb-6"><label for="description" class="block text-sm font-medium text-wood-700 mb-2">Description</label> <textarea id="description" rows="4" class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all resize-none" placeholder="Describe your requirements..."></textarea>
+          </div><button type="submit" id="contact-submit-btn" class="w-full bg-wood-600 hover:bg-wood-500 text-cream-100 py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2"> <span>Submit Request</span>
+           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+           </svg></button>
+         </form><!-- Success Message -->
+         <div id="contact-success" class="hidden text-center py-8">
+          <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+           <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg>
+          </div>
+          <h3 class="font-display text-xl font-semibold text-wood-800 mb-2">Request Submitted!</h3>
+          <p class="text-wood-600 mb-4">We'll contact you within 24 hours.</p><button onclick="resetContactForm()" class="text-wood-600 hover:text-wood-800 font-medium underline">Submit Another Request</button>
+         </div>
         </div>
+       </div>
       </div>
-
-      <!-- Products Tab -->
-      <div id="tab-products" class="admin-content max-w-7xl mx-auto py-8 px-4">
-        <h2 class="text-2xl font-bold text-amber-900 mb-6">Your Products</h2>
-        <div id="admin-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        <div id="admin-no-products" class="hidden text-center py-16">
-          <div class="text-6xl mb-4">📦</div>
-          <p class="text-xl text-gray-500 mb-4">No products yet. Add your first product!</p>
-          <button onclick="showAdminTab('add')" class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-medium"> ➕ Add Product </button>
+     </div>
+    </section><!-- Admin Login Page -->
+    <section id="page-admin-login" class="page-section hidden">
+     <div class="min-h-screen flex items-center justify-center py-12 px-4">
+      <div class="w-full max-w-md">
+       <div class="bg-white rounded-3xl shadow-xl p-8">
+        <div class="text-center mb-8">
+         <div class="w-16 h-16 bg-wood-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-wood-600" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7v2H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2h-1V7c0-2.76-2.24-5-5-5zm0 2c1.65 0 3 1.35 3 3v2H9V7c0-1.65 1.35-3 3-3zm0 10c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z" />
+          </svg>
+         </div>
+         <h1 class="font-display text-2xl font-bold text-wood-800">Admin Login</h1>
+         <p class="text-wood-600 text-sm mt-2">Enter credentials to access dashboard</p>
         </div>
-      </div>
-
-      <!-- Inquiries Tab -->
-      <div id="tab-inquiries" class="admin-content hidden max-w-7xl mx-auto py-8 px-4">
-        <h2 class="text-2xl font-bold text-amber-900 mb-6">Customer Inquiries</h2>
-        <div id="inquiries-list" class="space-y-4"></div>
-        <div id="no-inquiries" class="hidden text-center py-16">
-          <div class="text-6xl mb-4">📭</div>
-          <p class="text-xl text-gray-500">No inquiries yet. Share your website to get customers!</p>
-        </div>
-      </div>
-
-      <!-- Add Product Tab – MULTIPLE PHOTO UPLOAD -->
-      <div id="tab-add" class="admin-content hidden max-w-3xl mx-auto py-8 px-4">
-        <div class="bg-white rounded-2xl shadow-lg p-8">
-          <h2 class="text-2xl font-bold text-amber-900 mb-6">Add New Product</h2>
-          <form id="add-product-form" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
-                <input type="text" id="product-name" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="e.g., Double Bed with Storage">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
-                <select id="product-category" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none">
-                  <option value="">Select Category</option>
-                  <option value="bed">🛏️ Bed</option>
-                  <option value="wardrobe">🚪 Wardrobe</option>
-                  <option value="almirah">🗄️ Almirah</option>
-                  <option value="rack">📚 Rack / Shelf</option>
-                  <option value="other">🪑 Other</option>
-                </select>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Wood Type</label>
-                <select id="product-wood" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none">
-                  <option value="">Select Wood</option>
-                  <option value="Sheesham">Sheesham (Rosewood)</option>
-                  <option value="Teak">Teak (Sagwan)</option>
-                  <option value="Mango">Mango Wood</option>
-                  <option value="Sal">Sal Wood</option>
-                  <option value="Mixed">Mixed Wood</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
-                <input type="text" id="product-price" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="e.g., 25,000 or Contact for Price">
-              </div>
-            </div>
-            
-            <!-- MULTIPLE IMAGES UPLOAD -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Product Images (Upload multiple)</label>
-              <input type="file" id="product-image-files" accept="image/*" multiple class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none bg-white">
-              <p class="text-xs text-gray-500 mt-1">Select multiple images. First image will be cover. Max 5MB each.</p>
-              <div id="multi-preview-container" class="gallery-preview-grid mt-3"></div>
-              <input type="hidden" id="product-images-json">
-            </div>
-            
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-              <textarea id="product-description" rows="3" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none" placeholder="Describe the product features, dimensions, etc."></textarea>
-            </div>
-            <button type="submit" id="add-product-btn" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-lg font-semibold text-lg transition-colors"> ➕ Add Product </button>
-          </form>
-          <div id="add-success" class="hidden mt-4 p-4 bg-green-100 text-green-700 rounded-lg text-center">✅ Product added successfully!</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Edit Product Modal -->
-    <div id="edit-product-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-auto">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-8 animate-fade relative my-8">
-        <button onclick="hideEditModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">×</button>
-        <h2 class="heading-font text-2xl font-bold text-amber-900 mb-6">✏️ Edit Product</h2>
-        <form id="edit-product-form" class="space-y-4">
-          <input type="hidden" id="edit-product-id">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
-              <input type="text" id="edit-product-name" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
-              <select id="edit-product-category" required class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none">
-                <option value="bed">🛏️ Bed</option>
-                <option value="wardrobe">🚪 Wardrobe</option>
-                <option value="almirah">🗄️ Almirah</option>
-                <option value="rack">📚 Rack / Shelf</option>
-                <option value="other">🪑 Other</option>
-              </select>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Wood Type</label>
-              <select id="edit-product-wood" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none">
-                <option value="">Select Wood</option>
-                <option value="Sheesham">Sheesham (Rosewood)</option>
-                <option value="Teak">Teak (Sagwan)</option>
-                <option value="Mango">Mango Wood</option>
-                <option value="Sal">Sal Wood</option>
-                <option value="Mixed">Mixed Wood</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
-              <input type="text" id="edit-product-price" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none">
-            </div>
-          </div>
-          
-          <!-- Image Management Section -->
-          <div class="image-management">
-            <label class="block text-sm font-medium text-gray-700 mb-3">📸 Manage Images (Click on image to set as cover)</label>
-            
-            <!-- Current Images Grid -->
-            <div id="edit-images-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-4"></div>
-            
-            <!-- Add More Images -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Add More Images</label>
-              <input type="file" id="edit-product-images" accept="image/*" multiple class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none bg-white">
-              <p class="text-xs text-gray-500 mt-1">Select multiple images to add. Max 5MB each.</p>
-              <div id="edit-new-preview" class="gallery-preview-grid mt-3"></div>
-            </div>
-            <input type="hidden" id="edit-images-json">
-          </div>
-          
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea id="edit-product-description" rows="3" class="w-full px-4 py-3 border-2 border-amber-200 rounded-lg focus:border-amber-500 focus:outline-none"></textarea>
-          </div>
-          
-          <div class="flex gap-3">
-            <button type="submit" id="edit-product-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors"> 💾 Save Changes </button>
-            <button type="button" onclick="hideEditModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold transition-colors"> Cancel </button>
-          </div>
+        <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
+         <div class="mb-4"><label for="admin-username" class="block text-sm font-medium text-wood-700 mb-2">Username</label> <input type="text" id="admin-username" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="Enter username">
+         </div>
+         <div class="mb-6"><label for="admin-password" class="block text-sm font-medium text-wood-700 mb-2">Password</label> <input type="password" id="admin-password" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="Enter password">
+         </div>
+         <div id="login-error" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm"></div><button type="submit" id="login-submit-btn" class="w-full bg-wood-600 hover:bg-wood-500 text-cream-100 py-4 rounded-xl font-semibold transition-all"> Sign In </button>
         </form>
-        <div id="edit-success" class="hidden mt-4 p-4 bg-green-100 text-green-700 rounded-lg text-center">✅ Product updated successfully!</div>
+        <p class="text-center text-wood-500 text-sm mt-6"><button onclick="navigateTo('home')" class="hover:text-wood-700 underline">← Back to Home</button></p>
+       </div>
       </div>
+     </div>
+    </section><!-- Admin Dashboard -->
+    <section id="page-admin-dashboard" class="page-section hidden">
+     <div class="bg-wood-800 py-6">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+       <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+         <h1 class="font-display text-2xl font-bold text-cream-100">Admin Dashboard</h1>
+         <p id="admin-welcome" class="text-wood-300 text-sm">Welcome, Dhanraj Jagid</p>
+        </div>
+        <div class="flex gap-3"><button onclick="navigateTo('home')" class="bg-wood-700 hover:bg-wood-600 text-cream-100 px-4 py-2 rounded-lg text-sm transition-colors"> View Site </button> <button onclick="handleAdminLogout()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-sm transition-colors"> Logout </button>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"><!-- Stats Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+       <div class="bg-white rounded-2xl p-6 shadow-lg">
+        <div class="flex items-center gap-4">
+         <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+          <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewbox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z" />
+          </svg>
+         </div>
+         <div>
+          <p class="text-wood-500 text-sm">Products</p>
+          <p id="stat-products" class="text-2xl font-bold text-wood-800">0</p>
+         </div>
+        </div>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-lg">
+        <div class="flex items-center gap-4">
+         <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+          <svg class="w-6 h-6 text-green-600" fill="currentColor" viewbox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z" />
+          </svg>
+         </div>
+         <div>
+          <p class="text-wood-500 text-sm">Requests</p>
+          <p id="stat-requests" class="text-2xl font-bold text-wood-800">0</p>
+         </div>
+        </div>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-lg">
+        <div class="flex items-center gap-4">
+         <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+          <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+          </svg>
+         </div>
+         <div>
+          <p class="text-wood-500 text-sm">Pending</p>
+          <p id="stat-pending" class="text-2xl font-bold text-wood-800">0</p>
+         </div>
+        </div>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-lg">
+        <div class="flex items-center gap-4">
+         <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+          <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" />
+          </svg>
+         </div>
+         <div>
+          <p class="text-wood-500 text-sm">Completed</p>
+          <p id="stat-completed" class="text-2xl font-bold text-wood-800">0</p>
+         </div>
+        </div>
+       </div>
+      </div><!-- Tabs -->
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+       <div class="flex border-b border-wood-200"><button onclick="switchAdminTab('products')" id="tab-products" class="admin-tab flex-1 px-6 py-4 text-sm font-medium bg-wood-50 text-wood-800 border-b-2 border-wood-600"> 📦 Products </button> <button onclick="switchAdminTab('requests')" id="tab-requests" class="admin-tab flex-1 px-6 py-4 text-sm font-medium text-wood-600 hover:bg-wood-50"> 📋 Customer Requests </button> <button onclick="switchAdminTab('woods')" id="tab-woods" class="admin-tab flex-1 px-6 py-4 text-sm font-medium text-wood-600 hover:bg-wood-50"> 🌳 Wood Types </button>
+       </div><!-- Products Tab Content -->
+       <div id="admin-products-content" class="admin-tab-content p-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+         <h2 class="font-display text-xl font-semibold text-wood-800">Manage Products</h2><button onclick="showProductModal()" class="bg-wood-600 hover:bg-wood-500 text-cream-100 px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg> Add Product </button>
+        </div>
+        <div id="admin-products-list" class="space-y-4"><!-- Products list will be rendered here -->
+        </div>
+        <div id="admin-products-empty" class="hidden text-center py-12">
+         <p class="text-wood-500">No products added yet. Click "Add Product" to get started.</p>
+        </div>
+       </div><!-- Requests Tab Content -->
+       <div id="admin-requests-content" class="admin-tab-content hidden p-6">
+        <h2 class="font-display text-xl font-semibold text-wood-800 mb-6">Customer Requests</h2>
+        <div id="admin-requests-list" class="space-y-4"><!-- Requests will be rendered here -->
+        </div>
+        <div id="admin-requests-empty" class="hidden text-center py-12">
+         <p class="text-wood-500">No customer requests yet.</p>
+        </div>
+       </div><!-- Woods Tab Content -->
+       <div id="admin-woods-content" class="admin-tab-content hidden p-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+         <h2 class="font-display text-xl font-semibold text-wood-800">Manage Wood Types</h2><button onclick="showWoodModal()" class="bg-wood-600 hover:bg-wood-500 text-cream-100 px-6 py-2 rounded-lg font-medium transition-all flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg> Add Wood Type </button>
+        </div>
+        <div id="admin-woods-list" class="space-y-4"><!-- Woods list will be rendered here -->
+        </div>
+        <div id="admin-woods-empty" class="hidden text-center py-12">
+         <p class="text-wood-500">No wood types added yet.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main><!-- Footer -->
+   <footer id="main-footer" class="bg-wood-900 text-cream-100 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="grid md:grid-cols-3 gap-8">
+      <div>
+       <h3 id="footer-shop-name" class="font-display text-xl font-bold mb-4">Anjali Furniture Works</h3>
+       <p class="text-wood-400 text-sm mb-4">Crafting premium wooden furniture with passion and precision.</p>
+       <div class="flex gap-4"><a id="footer-whatsapp-link" href="https://wa.me/918386076109" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-wood-800 hover:bg-wood-700 rounded-lg flex items-center justify-center transition-colors">
+         <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+         </svg></a> <a id="footer-phone-link" href="tel:8386076109" class="w-10 h-10 bg-wood-800 hover:bg-wood-700 rounded-lg flex items-center justify-center transition-colors">
+         <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+         </svg></a>
+       </div>
+      </div>
+      <div>
+       <h4 class="font-semibold mb-4">Quick Links</h4>
+       <div class="space-y-2"><button onclick="navigateTo('home')" class="block text-wood-400 hover:text-cream-100 text-sm transition-colors">Home</button> <button onclick="navigateTo('products')" class="block text-wood-400 hover:text-cream-100 text-sm transition-colors">Products</button> <button onclick="navigateTo('woods')" class="block text-wood-400 hover:text-cream-100 text-sm transition-colors">Wood Types</button> <button onclick="navigateTo('contact')" class="block text-wood-400 hover:text-cream-100 text-sm transition-colors">Contact</button>
+       </div>
+      </div>
+      <div>
+       <h4 class="font-semibold mb-4">Contact</h4>
+       <div class="space-y-2 text-wood-400 text-sm">
+        <p id="footer-phone-text">📞 8386076109</p>
+        <p id="footer-address-text">📍 138, Metrocity, Swarn Garden Wali Gali, Manyawas, Mansarovar, Jaipur</p>
+        <p>⏰ Mon - Sat: 9AM - 7PM</p>
+       </div>
+      </div>
+     </div>
+     <div class="border-t border-wood-800 mt-8 pt-8 text-center">
+      <p class="text-wood-500 text-sm">© 2024 Anjali Furniture Works. All rights reserved.</p>
+     </div>
     </div>
+   </footer><!-- Product Modal -->
+   <div id="product-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90%] overflow-y-auto">
+     <div class="p-6 border-b border-wood-200 flex justify-between items-center sticky top-0 bg-white rounded-t-2xl">
+      <h3 id="product-modal-title" class="font-display text-xl font-semibold text-wood-800">Add Product</h3><button onclick="hideProductModal()" class="text-wood-500 hover:text-wood-700">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+       </svg></button>
+     </div>
+     <form id="product-form" onsubmit="saveProduct(event)" class="p-6"><input type="hidden" id="product-id">
+      <div class="mb-4"><label for="product-title" class="block text-sm font-medium text-wood-700 mb-2">Title *</label> <input type="text" id="product-title" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="Product title">
+      </div>
+      <div class="mb-4"><label for="product-category" class="block text-sm font-medium text-wood-700 mb-2">Category *</label> <select id="product-category" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all"> <option value="">Select category</option> <option value="Beds">Beds</option> <option value="Wardrobes">Wardrobes</option> <option value="Almirah">Almirah</option> <option value="Racks">Racks</option> <option value="Doors">Doors</option> <option value="Windows">Windows</option> <option value="Custom Work">Custom Work</option> </select>
+      </div>
+      <div class="mb-4"><label for="product-wood" class="block text-sm font-medium text-wood-700 mb-2">Wood Type *</label> <select id="product-wood" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all"> <option value="">Select wood type</option> <option value="Teak Wood">Teak Wood</option> <option value="Sheesham">Sheesham</option> <option value="Sal Wood">Sal Wood</option> <option value="Plywood">Plywood</option> <option value="MDF">MDF</option> </select>
+      </div>
+      
+      <!-- Price Field -->
+      <div class="mb-4"><label for="product-price" class="block text-sm font-medium text-wood-700 mb-2">Price (₹) *</label> <input type="number" id="product-price" required min="0" step="100" class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="e.g., 15000">
+      </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="hidden fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg z-50">
-      <span id="toast-message"></span>
+      <div class="mb-4"><label for="product-description" class="block text-sm font-medium text-wood-700 mb-2">Description</label> <textarea id="product-description" rows="3" class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all resize-none" placeholder="Product description"></textarea>
+      </div>
+      
+      <!-- Multiple Image Upload Section -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-wood-700 mb-2">Product Images (Upload via Phone)</label>
+        <div class="border-2 border-dashed border-wood-300 rounded-xl p-4 text-center bg-wood-50">
+          <input type="file" id="product-images" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
+          <div class="cursor-pointer" onclick="document.getElementById('product-images').click()">
+            <svg class="w-12 h-12 text-wood-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-wood-600 text-sm">Click to upload images from your phone</p>
+            <p class="text-wood-400 text-xs mt-1">You can select multiple images</p>
+          </div>
+        </div>
+        
+        <!-- Image Preview Grid -->
+        <div id="image-preview-grid" class="image-upload-grid mt-4"></div>
+        <input type="hidden" id="product-image-urls" value="">
+      </div>
+
+      <!-- Single Image URL (for backward compatibility) -->
+      <div class="mb-6"><label for="product-image" class="block text-sm font-medium text-wood-700 mb-2">Main Image URL (Optional)</label> <input type="url" id="product-image" class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="https://example.com/image.jpg">
+       <p class="text-wood-500 text-xs mt-1">Optional: Enter main image URL or use upload above</p>
+      </div>
+      <div class="flex gap-3"><button type="button" onclick="hideProductModal()" class="flex-1 bg-wood-100 hover:bg-wood-200 text-wood-700 py-3 rounded-xl font-medium transition-all"> Cancel </button> <button type="submit" id="product-submit-btn" class="flex-1 bg-wood-600 hover:bg-wood-500 text-cream-100 py-3 rounded-xl font-medium transition-all"> Save Product </button>
+      </div>
+     </form>
     </div>
+   </div><!-- Wood Modal -->
+   <div id="wood-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-lg max-h-[90%] overflow-y-auto">
+     <div class="p-6 border-b border-wood-200 flex justify-between items-center sticky top-0 bg-white rounded-t-2xl">
+      <h3 id="wood-modal-title" class="font-display text-xl font-semibold text-wood-800">Add Wood Type</h3><button onclick="hideWoodModal()" class="text-wood-500 hover:text-wood-700">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+       </svg></button>
+     </div>
+     <form id="wood-form" onsubmit="saveWood(event)" class="p-6"><input type="hidden" id="wood-id">
+      <div class="mb-4"><label for="wood-name" class="block text-sm font-medium text-wood-700 mb-2">Wood Name *</label> <input type="text" id="wood-name" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="Wood name">
+      </div>
+      <div class="grid grid-cols-2 gap-4 mb-4">
+       <div><label for="wood-durability" class="block text-sm font-medium text-wood-700 mb-2">Durability *</label> <select id="wood-durability" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all"> <option value="">Select</option> <option value="Very High">Very High</option> <option value="High">High</option> <option value="Medium">Medium</option> <option value="Low">Low</option> </select>
+       </div>
+       <div><label for="wood-price" class="block text-sm font-medium text-wood-700 mb-2">Price Range *</label> <select id="wood-price" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all"> <option value="">Select</option> <option value="Premium">Premium (₹₹₹₹)</option> <option value="High">High (₹₹₹)</option> <option value="Medium">Medium (₹₹)</option> <option value="Budget">Budget (₹)</option> </select>
+       </div>
+      </div>
+      <div class="mb-4"><label for="wood-usage" class="block text-sm font-medium text-wood-700 mb-2">Best Used For *</label> <input type="text" id="wood-usage" required class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="e.g., Beds, Doors, All furniture">
+      </div>
+      <div class="mb-4"><label for="wood-description" class="block text-sm font-medium text-wood-700 mb-2">Description</label> <textarea id="wood-description" rows="3" class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all resize-none" placeholder="Wood description"></textarea>
+      </div>
+      <div class="mb-6"><label for="wood-image" class="block text-sm font-medium text-wood-700 mb-2">Image URL</label> <input type="url" id="wood-image" class="w-full px-4 py-3 rounded-xl border border-wood-200 focus:border-wood-400 focus:ring-2 focus:ring-wood-200 outline-none transition-all" placeholder="https://example.com/image.jpg">
+      </div>
+      <div class="flex gap-3"><button type="button" onclick="hideWoodModal()" class="flex-1 bg-wood-100 hover:bg-wood-200 text-wood-700 py-3 rounded-xl font-medium transition-all"> Cancel </button> <button type="submit" id="wood-submit-btn" class="flex-1 bg-wood-600 hover:bg-wood-500 text-cream-100 py-3 rounded-xl font-medium transition-all"> Save Wood Type </button>
+      </div>
+     </form>
+    </div>
+   </div><!-- Product Detail Modal with Slider -->
+   <div id="product-detail-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90%] overflow-y-auto relative">
+     <button onclick="hideProductDetailModal()" class="absolute top-4 right-4 z-10 bg-wood-800 text-white rounded-full p-2 hover:bg-wood-700 transition-colors">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+     </button>
+     
+     <div class="p-6">
+      <!-- Swiper Slider -->
+      <div class="swiper product-swiper mb-6">
+       <div class="swiper-wrapper" id="product-slider-images"></div>
+       <div class="swiper-pagination"></div>
+       <div class="swiper-button-next"></div>
+       <div class="swiper-button-prev"></div>
+      </div>
+      
+      <!-- Product Info -->
+      <div id="product-detail-info" class="text-center"></div>
+      
+      <!-- WhatsApp Enquiry Button -->
+      <div class="mt-6 text-center">
+       <a id="product-detail-whatsapp" href="#" target="_blank" rel="noopener noreferrer" 
+          class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-xl font-semibold transition-all shadow-lg">
+         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+         </svg>
+         Enquire on WhatsApp
+       </a>
+      </div>
+     </div>
+    </div>
+   </div><!-- Delete Confirmation Modal -->
+   <div id="delete-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-sm p-6">
+     <div class="text-center">
+      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+       <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+       </svg>
+      </div>
+      <h3 class="font-display text-xl font-semibold text-wood-800 mb-2">Confirm Delete</h3>
+      <p id="delete-message" class="text-wood-600 mb-6">Are you sure you want to delete this item?</p>
+      <div class="flex gap-3"><button onclick="hideDeleteModal()" class="flex-1 bg-wood-100 hover:bg-wood-200 text-wood-700 py-3 rounded-xl font-medium transition-all"> Cancel </button> <button onclick="confirmDelete()" id="delete-confirm-btn" class="flex-1 bg-red-600 hover:bg-red-500 text-white py-3 rounded-xl font-medium transition-all"> Delete </button>
+      </div>
+     </div>
+    </div>
+   </div><!-- Toast Notification -->
+   <div id="toast" class="fixed bottom-4 right-4 z-50 hidden">
+    <div class="bg-wood-800 text-cream-100 px-6 py-4 rounded-xl shadow-lg flex items-center gap-3">
+     <svg id="toast-icon" class="w-5 h-5 text-green-400" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+     </svg><span id="toast-message">Success!</span>
+    </div>
+   </div>
   </div>
-
   <script>
-    // Firebase SDK wrappers - NO API CALLS
-    window.dataSdk = {
-      async init(handler) {
-        try {
-          const snapshot = await getDocs(collection(window.db, "records"));
-          const data = [];
-          snapshot.forEach(docSnap => {
-            data.push({ __backendId: docSnap.id, ...docSnap.data() });
-          });
-          if (handler?.onDataChanged) handler.onDataChanged(data);
-          return { isOk: true };
-        } catch (error) {
-          console.error('Firebase error:', error);
-          showToast('⚠️ Failed to load data');
-          return { isOk: false, error: error.message };
-        }
-      },
-
-      async create(data) {
-        try {
-          const docRef = await addDoc(collection(window.db, "records"), data);
-          return { isOk: true, id: docRef.id };
-        } catch (error) {
-          console.error('Firebase create error:', error);
-          showToast('⚠️ Failed to save');
-          return { isOk: false, error: error.message };
-        }
-      },
-
-      async update(record, updates) {
-        try {
-          await updateDoc(doc(window.db, "records", record.__backendId), updates);
-          return { isOk: true };
-        } catch (error) {
-          console.error('Firebase update error:', error);
-          showToast('⚠️ Failed to update');
-          return { isOk: false, error: error.message };
-        }
-      },
-
-      async delete(record) {
-        try {
-          await deleteDoc(doc(window.db, "records", record.__backendId));
-          return { isOk: true };
-        } catch (error) {
-          console.error('Firebase delete error:', error);
-          showToast('⚠️ Failed to delete');
-          return { isOk: false, error: error.message };
-        }
-      }
-    };
-
-    // ---------- GLOBAL STATE ----------
-    let allData = [];
-    let products = [];
-    let inquiries = [];
-    let adminCredentials = null;
-    let currentFilter = 'all';
-    let config = {
+    // ===== CONFIG & STATE =====
+    const defaultConfig = {
       shop_name: 'Anjali Furniture Works',
-      tagline: 'Quality Handcrafted Wooden Furniture Since 1995',
-      owner_name: 'Dhanraj Jagid'
+      tagline: 'Creating timeless wooden masterpieces with passion and precision since generations',
+      phone_number: '8386076109',
+      address: '138, Metrocity, Swarn Garden Wali Gali, Manyawas, Mansarovar, Jaipur',
+      admin_name: 'Dhanraj Jagid',
+      background_color: '#fdf8f3',
+      surface_color: '#ffffff',
+      text_color: '#4a2c17',
+      primary_action_color: '#8b5a2b',
+      secondary_action_color: '#d4a574'
     };
 
-    // ALL PHONE NUMBERS UPDATED TO 8386076109
-    const WHATSAPP_NUMBER = '918386076109';
-    const ADMIN_PHONE = '8386076109';
-    const SECURITY_CODE = 'ANKITJATWA@123';
+    let config = { ...defaultConfig };
+    let currentPage = 'home';
+    let isAdminLoggedIn = false;
+    let currentAdminTab = 'products';
+    let deleteCallback = null;
+    let editingProductId = null;
+    let editingWoodId = null;
+    let currentFilter = 'All';
+    let searchQuery = '';
+    let uploadedImages = [];
 
+    // Data storage
+    let products = [];
+    let customerRequests = [];
+    let woods = [];
+
+    // Swiper instance
+    let productSwiper = null;
+
+    // ===== ELEMENT SDK =====
+    const onConfigChange = (newConfig) => {
+      config = { ...defaultConfig, ...newConfig };
+      
+      document.getElementById('nav-shop-name').textContent = config.shop_name;
+      document.getElementById('hero-shop-name').textContent = config.shop_name;
+      document.getElementById('footer-shop-name').textContent = config.shop_name;
+      document.getElementById('hero-tagline').textContent = config.tagline;
+      
+      const whatsappUrl = `https://wa.me/91${config.phone_number}?text=Hi! I'm interested in your furniture work.`;
+      
+      document.getElementById('hero-whatsapp-btn').href = whatsappUrl;
+      document.getElementById('form-whatsapp-btn').href = whatsappUrl;
+      document.getElementById('footer-whatsapp-link').href = `https://wa.me/91${config.phone_number}`;
+      document.getElementById('contact-phone-link').href = `tel:${config.phone_number}`;
+      document.getElementById('contact-phone-link').textContent = config.phone_number;
+      document.getElementById('form-phone-link').href = `tel:${config.phone_number}`;
+      document.getElementById('form-phone-link').textContent = config.phone_number;
+      document.getElementById('footer-phone-link').href = `tel:${config.phone_number}`;
+      document.getElementById('footer-phone-text').textContent = `📞 ${config.phone_number}`;
+      document.getElementById('contact-address-text').textContent = config.address;
+      document.getElementById('form-address-text').textContent = config.address;
+      document.getElementById('footer-address-text').textContent = `📍 ${config.address}`;
+      document.getElementById('admin-welcome').textContent = `Welcome, ${config.admin_name}`;
+    };
+
+    // ===== DATA SDK =====
     const dataHandler = {
       onDataChanged(data) {
-        allData = data;
-        products = data.filter(d => d.type === 'product');
-        inquiries = data.filter(d => d.type === 'inquiry');
-        adminCredentials = data.find(d => d.type === 'admin_credentials') || null;
+        products = data.filter(d => d && d.type === 'product');
+        customerRequests = data.filter(d => d && d.type === 'request');
+        woods = data.filter(d => d && d.type === 'wood');
+        
         renderProducts();
+        renderWoods();
         renderAdminProducts();
-        renderInquiries();
+        renderAdminRequests();
+        renderAdminWoods();
+        updateStats();
       }
     };
 
-    // ---------- INIT ----------
-    async function initApp() {
-      await window.dataSdk.init(dataHandler);
-      document.getElementById('loading-screen').classList.add('hidden');
-      document.getElementById('customer-view').classList.remove('hidden');
-    }
-
-    function updateUIFromConfig() {
-      const headerShop = document.getElementById('header-shop-name');
-      const headerTag = document.getElementById('header-tagline');
-      const footerOwner = document.getElementById('footer-owner');
-      if (headerShop) headerShop.textContent = '🪵 ' + (config.shop_name || 'Anjali Furniture Works');
-      if (headerTag) headerTag.textContent = config.tagline || 'Quality Handcrafted Wooden Furniture Since 1995';
-      if (footerOwner) footerOwner.textContent = config.owner_name || 'Dhanraj Jagid';
-    }
-
-    // ---------- RENDER PRODUCTS ----------
-    function renderProducts() {
-      const grid = document.getElementById('products-grid');
-      const noProducts = document.getElementById('no-products');
-      if (!grid) return;
-      const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
-      if (filtered.length === 0) {
-        grid.innerHTML = '';
-        noProducts?.classList.remove('hidden');
+    // ===== NAVIGATION =====
+    function navigateTo(page) {
+      currentPage = page;
+      
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.add('hidden');
+      });
+      
+      const pageElement = document.getElementById(`page-${page}`);
+      if (pageElement) pageElement.classList.remove('hidden');
+      
+      const footer = document.getElementById('main-footer');
+      if (footer) {
+        if (page === 'admin-dashboard' || page === 'admin-login') {
+          footer.classList.add('hidden');
+        } else {
+          footer.classList.remove('hidden');
+        }
+      }
+      
+      if (page === 'admin-dashboard' && !isAdminLoggedIn) {
+        navigateTo('admin-login');
         return;
       }
-      noProducts?.classList.add('hidden');
+      
+      const wrapper = document.querySelector('.app-wrapper');
+      if (wrapper) wrapper.scrollTo(0, 0);
+    }
 
-      grid.innerHTML = filtered.map(p => {
-        const images = p.images && Array.isArray(p.images) && p.images.length ? p.images : [];
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    // ===== ADMIN AUTH =====
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('admin-username').value;
+      const password = document.getElementById('admin-password').value;
+      const errorEl = document.getElementById('login-error');
+      
+      if (username === 'admin' && password === 'anjali123') {
+        isAdminLoggedIn = true;
+        if (errorEl) errorEl.classList.add('hidden');
+        navigateTo('admin-dashboard');
+        showToast('Welcome to Admin Dashboard!');
+      } else {
+        if (errorEl) {
+          errorEl.textContent = 'Invalid username or password';
+          errorEl.classList.remove('hidden');
+        }
+      }
+    }
+
+    function handleAdminLogout() {
+      isAdminLoggedIn = false;
+      navigateTo('home');
+      showToast('Logged out successfully');
+    }
+
+    // ===== ADMIN TABS =====
+    function switchAdminTab(tab) {
+      currentAdminTab = tab;
+      
+      document.querySelectorAll('.admin-tab').forEach(btn => {
+        btn.classList.remove('bg-wood-50', 'text-wood-800', 'border-b-2', 'border-wood-600');
+        btn.classList.add('text-wood-600');
+      });
+      
+      const activeTab = document.getElementById(`tab-${tab}`);
+      if (activeTab) {
+        activeTab.classList.add('bg-wood-50', 'text-wood-800', 'border-b-2', 'border-wood-600');
+        activeTab.classList.remove('text-wood-600');
+      }
+      
+      document.querySelectorAll('.admin-tab-content').forEach(content => {
+        content.classList.add('hidden');
+      });
+      
+      const contentEl = document.getElementById(`admin-${tab}-content`);
+      if (contentEl) contentEl.classList.remove('hidden');
+      
+      if (tab === 'requests') {
+        renderAdminRequests();
+      }
+    }
+
+    // ===== IMAGE UPLOAD HANDLING =====
+    function handleImageUpload(event) {
+      const files = event.target.files;
+      
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          uploadedImages.push(e.target.result);
+          renderImagePreviews();
+        };
+        
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function renderImagePreviews() {
+      const grid = document.getElementById('image-preview-grid');
+      const urlsInput = document.getElementById('product-image-urls');
+      
+      if (!grid || !urlsInput) return;
+      
+      if (uploadedImages.length === 0) {
+        grid.innerHTML = '';
+        urlsInput.value = '';
+        return;
+      }
+      
+      grid.innerHTML = uploadedImages.map((img, index) => `
+        <div class="upload-preview">
+          <img src="${img}" alt="Preview ${index + 1}">
+          <div class="remove-image" onclick="removeImage(${index})">×</div>
+        </div>
+      `).join('');
+      
+      urlsInput.value = uploadedImages.join(',');
+    }
+
+    function removeImage(index) {
+      uploadedImages.splice(index, 1);
+      renderImagePreviews();
+    }
+
+    // ===== PRODUCT DETAIL MODAL WITH SLIDER =====
+    function showProductDetail(product) {
+      const modal = document.getElementById('product-detail-modal');
+      const sliderContainer = document.getElementById('product-slider-images');
+      const infoContainer = document.getElementById('product-detail-info');
+      const whatsappBtn = document.getElementById('product-detail-whatsapp');
+      
+      if (!modal || !sliderContainer || !infoContainer || !whatsappBtn) return;
+      
+      let images = [];
+      if (product.image_urls) {
+        images = product.image_urls.split(',').filter(url => url && url.trim() !== '');
+      } else if (product.image_url) {
+        images = [product.image_url];
+      } else {
+        images = [getCategoryEmoji(product.category)];
+      }
+      
+      sliderContainer.innerHTML = images.map(img => {
+        const isDataUrl = img && img.startsWith('data:');
+        const isHttpUrl = img && img.startsWith('http');
+        
         return `
-        <div class="bg-white rounded-xl overflow-hidden shadow-lg card-hover animate-fade" data-product-id="${p.__backendId}">
-          <div class="h-48 bg-gradient-to-br from-amber-200 to-amber-300 flex items-center justify-center relative overflow-hidden">
-            ${images.length > 0 ? `
-              <div class="slideshow-container w-full h-full" data-product-id="${p.__backendId}">
-                ${images.map((img, idx) => `<img src="${img}" class="slide-img ${idx === 0 ? 'active' : ''}" alt="${p.name}" loading="lazy">`).join('')}
-                <button class="slide-btn prev" onclick="event.stopPropagation(); changeSlide('${p.__backendId}', -1)">❮</button>
-                <button class="slide-btn next" onclick="event.stopPropagation(); changeSlide('${p.__backendId}', 1)">❯</button>
-                <div class="dot-container" id="dots-${p.__backendId}">
-                  ${images.map((_, idx) => `<span class="dot ${idx === 0 ? 'active' : ''}" onclick="event.stopPropagation(); setSlide('${p.__backendId}', ${idx})"></span>`).join('')}
-                </div>
-              </div>
-            ` : `<div class="text-6xl">${getCategoryEmoji(p.category)}</div>`}
+        <div class="swiper-slide">
+          <div class="aspect-square bg-wood-100 rounded-xl flex items-center justify-center p-4">
+            ${(isDataUrl || isHttpUrl) 
+              ? `<img src="${img}" alt="${product.title}" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-8xl\'>${getCategoryEmoji(product.category)}</span>';">`
+              : `<span class="text-8xl">${img}</span>`
+            }
           </div>
-          <div class="p-4">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full">${getCategoryLabel(p.category)}</span>
-              ${p.wood_type ? `<span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">${p.wood_type}</span>` : ''}
+        </div>
+      `}).join('');
+      
+      const price = product.price ? `₹${Number(product.price).toLocaleString('en-IN')}` : 'Price on request';
+      
+      infoContainer.innerHTML = `
+        <h2 class="font-display text-2xl font-bold text-wood-800 mb-2">${product.title || ''}</h2>
+        <span class="inline-block px-3 py-1 bg-wood-100 text-wood-700 text-sm font-medium rounded-full mb-3">${product.category || ''}</span>
+        <div class="price-tag mb-3">${price}</div>
+        <p class="text-wood-600 mb-4">${product.description || 'Beautiful handcrafted furniture piece'}</p>
+        <p class="text-wood-700 font-medium">🪵 ${product.wood_type || ''}</p>
+      `;
+      
+      const presetMessage = `Hi! I'm interested in: ${product.title || ''} (${product.category || ''}) - ${product.wood_type || ''} - ${price}`;
+      whatsappBtn.href = `https://wa.me/91${config.phone_number}?text=${encodeURIComponent(presetMessage)}`;
+      
+      modal.classList.remove('hidden');
+      
+      setTimeout(() => {
+        if (productSwiper) {
+          productSwiper.destroy();
+        }
+        productSwiper = new Swiper('.product-swiper', {
+          slidesPerView: 1,
+          spaceBetween: 30,
+          loop: images.length > 1,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      }, 100);
+    }
+
+    function hideProductDetailModal() {
+      const modal = document.getElementById('product-detail-modal');
+      if (modal) modal.classList.add('hidden');
+      if (productSwiper) {
+        productSwiper.destroy();
+        productSwiper = null;
+      }
+    }
+
+    // ===== PRODUCTS =====
+    function renderProducts() {
+      const grid = document.getElementById('products-grid');
+      const empty = document.getElementById('products-empty');
+      
+      if (!grid || !empty) return;
+      
+      let filtered = products;
+      
+      if (currentFilter !== 'All') {
+        filtered = filtered.filter(p => p && p.category === currentFilter);
+      }
+      
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(p => p && (
+          (p.title && p.title.toLowerCase().includes(query)) ||
+          (p.description && p.description.toLowerCase().includes(query)) ||
+          (p.wood_type && p.wood_type.toLowerCase().includes(query))
+        ));
+      }
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      
+      empty.classList.add('hidden');
+      grid.innerHTML = filtered.map(product => {
+        if (!product) return '';
+        
+        const productStr = JSON.stringify(product).replace(/"/g, '&quot;');
+        const price = product.price ? `₹${Number(product.price).toLocaleString('en-IN')}` : 'Price on request';
+        const mainImage = getProductMainImage(product);
+        
+        return `
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover fade-in cursor-pointer" onclick='showProductDetail(${productStr})'>
+          <div class="aspect-square bg-wood-100 flex items-center justify-center relative">
+            ${mainImage}
+            <div class="absolute top-2 right-2 bg-wood-600 text-white px-2 py-1 rounded-lg text-sm font-bold">
+              ${price}
             </div>
-            <h3 class="font-bold text-amber-900 text-lg mb-1">${p.name}</h3>
-            ${p.description ? `<p class="text-gray-600 text-sm mb-2 line-clamp-2">${p.description}</p>` : ''}
-            <div class="flex items-center justify-between mt-3">
-              <span class="text-amber-600 font-bold">${p.price ? '₹' + p.price : 'Contact for Price'}</span>
-              <a href="https://wa.me/918386076109?text=${encodeURIComponent('Hi! I am interested in: ' + p.name + ' - Anjali Furniture')}" target="_blank" rel="noopener noreferrer" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-full text-sm flex items-center gap-1">💬 Inquire</a>
+          </div>
+          <div class="p-5">
+            <span class="inline-block px-3 py-1 bg-wood-100 text-wood-700 text-xs font-medium rounded-full mb-3">${product.category || ''}</span>
+            <h3 class="font-display font-semibold text-wood-800 text-lg mb-2">${product.title || ''}</h3>
+            <p class="text-wood-600 text-sm mb-3 line-clamp-2">${product.description || 'Beautiful handcrafted furniture piece'}</p>
+            <div class="flex items-center justify-between">
+              <span class="text-wood-500 text-sm flex items-center gap-1">
+                <span>🪵</span> ${product.wood_type || ''}
+              </span>
+              <span class="text-wood-400 text-xs">${getImageCount(product)} 📸</span>
             </div>
           </div>
         </div>
       `}).join('');
     }
 
-    window.changeSlide = function(productId, direction) {
-      const container = document.querySelector(`.slideshow-container[data-product-id="${productId}"]`);
-      if (!container) return;
-      const imgs = container.querySelectorAll('.slide-img');
-      let activeIndex = Array.from(imgs).findIndex(img => img.classList.contains('active'));
-      imgs[activeIndex].classList.remove('active');
-      let newIndex = activeIndex + direction;
-      if (newIndex < 0) newIndex = imgs.length - 1;
-      if (newIndex >= imgs.length) newIndex = 0;
-      imgs[newIndex].classList.add('active');
-      const dots = container.querySelectorAll('.dot');
-      dots.forEach(d => d.classList.remove('active'));
-      dots[newIndex]?.classList.add('active');
-    };
-    
-    window.setSlide = function(productId, index) {
-      const container = document.querySelector(`.slideshow-container[data-product-id="${productId}"]`);
-      if (!container) return;
-      const imgs = container.querySelectorAll('.slide-img');
-      imgs.forEach((img, i) => img.classList.toggle('active', i === index));
-      const dots = container.querySelectorAll('.dot');
-      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-    };
-
-    function getCategoryEmoji(cat) { const e = { bed:'🛏️', wardrobe:'🚪', almirah:'🗄️', rack:'📚', other:'🪑' }; return e[cat] || '🪵'; }
-    function getCategoryLabel(cat) { const l = { bed:'Bed', wardrobe:'Wardrobe', almirah:'Almirah', rack:'Rack', other:'Other' }; return l[cat] || 'Furniture'; }
-
-    // ---------- SIGN IN ----------
-    window.showSignInPage = function() {
-      document.getElementById('signin-page').classList.remove('hidden');
-      document.getElementById('customer-view').classList.add('hidden');
-    };
-    
-    window.hideSignInPage = function() {
-      document.getElementById('signin-page').classList.add('hidden');
-      document.getElementById('customer-view').classList.remove('hidden');
-    };
-    
-    document.getElementById('signin-form')?.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const phoneInput = document.getElementById('signin-phone').value.trim();
-      const codeInput = document.getElementById('signin-code').value.trim();
-      const errorEl = document.getElementById('signin-error');
+    function getImageCount(product) {
+      if (!product) return 0;
       
-      if (phoneInput !== ADMIN_PHONE) {
-        errorEl.textContent = '❌ Invalid admin phone.';
-        errorEl.classList.remove('hidden');
-        return;
+      if (product.image_urls) {
+        return product.image_urls.split(',').filter(url => url && url.trim() !== '').length;
+      } else if (product.image_url && product.image_url.trim() !== '') {
+        return 1;
       }
-      if (codeInput !== SECURITY_CODE) {
-        errorEl.textContent = '❌ Incorrect security code. Access denied.';
-        errorEl.classList.remove('hidden');
-        return;
-      }
-      errorEl.classList.add('hidden');
-      hideSignInPage();
-      document.getElementById('admin-login-modal').classList.remove('hidden');
-    });
-
-    // ---------- ADMIN LOGIN & SETUP ----------
-    window.hideAdminLogin = function() { 
-      document.getElementById('admin-login-modal').classList.add('hidden'); 
-      document.getElementById('login-error').classList.add('hidden'); 
-    };
-    
-    window.showSetupForm = function() { 
-      document.getElementById('admin-login-modal').classList.add('hidden'); 
-      document.getElementById('admin-setup-modal').classList.remove('hidden'); 
-    };
-    
-    window.hideSetupForm = function() { 
-      document.getElementById('admin-setup-modal').classList.add('hidden'); 
-      document.getElementById('setup-error').classList.add('hidden'); 
-    };
-
-    document.getElementById('setup-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('setup-email').value.trim();
-      const pwd = document.getElementById('setup-password').value;
-      const conf = document.getElementById('setup-confirm').value;
-      const err = document.getElementById('setup-error');
-      if (pwd !== conf) { err.textContent = 'Passwords do not match!'; err.classList.remove('hidden'); return; }
-      if (adminCredentials) { err.textContent = 'Admin already exists!'; err.classList.remove('hidden'); return; }
-      const btn = document.getElementById('setup-btn');
-      btn.disabled = true; btn.textContent = 'Creating...';
-      const result = await window.dataSdk.create({ 
-        type: 'admin_credentials', 
-        name: email, 
-        description: pwd, 
-        category: '', 
-        wood_type: '', 
-        price: '', 
-        images: [], 
-        customer_name: '', 
-        customer_phone: '', 
-        customer_message: '', 
-        created_at: new Date().toISOString() 
-      });
-      btn.disabled = false; btn.textContent = 'Create Admin Account';
-      if (result.isOk) { 
-        hideSetupForm(); 
-        showToast('✅ Admin account created! Login now.'); 
-      } else { 
-        err.textContent = 'Failed'; 
-        err.classList.remove('hidden'); 
-      }
-    });
-
-    document.getElementById('login-form')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('admin-email').value.trim();
-      const pwd = document.getElementById('admin-password').value;
-      const err = document.getElementById('login-error');
-      if (!adminCredentials) { 
-        err.textContent = 'No admin account found. Setup first.'; 
-        err.classList.remove('hidden'); 
-        return; 
-      }
-      if (email === adminCredentials.name && pwd === adminCredentials.description) {
-        document.getElementById('admin-login-modal').classList.add('hidden');
-        document.getElementById('customer-view').classList.add('hidden');
-        document.getElementById('signin-page')?.classList.add('hidden');
-        document.getElementById('admin-panel').classList.remove('hidden');
-        showToast('✅ Welcome Admin!');
-      } else { 
-        err.textContent = 'Invalid email or password!'; 
-        err.classList.remove('hidden'); 
-      }
-    });
-
-    window.logoutAdmin = function() { 
-      document.getElementById('admin-panel').classList.add('hidden'); 
-      document.getElementById('customer-view').classList.remove('hidden'); 
-      showToast('👋 Logged out'); 
-    };
-    
-    window.showCustomerView = function() { 
-      document.getElementById('admin-panel').classList.add('hidden'); 
-      document.getElementById('customer-view').classList.remove('hidden'); 
-    };
-    
-    window.showAdminTab = function(tab) {
-      document.querySelectorAll('.admin-tab').forEach(t => { 
-        t.classList.remove('text-amber-600', 'border-b-2', 'border-amber-600'); 
-        t.classList.add('text-gray-500'); 
-      });
-      const activeTab = document.querySelector(`[data-tab="${tab}"]`);
-      if (activeTab) { 
-        activeTab.classList.add('text-amber-600', 'border-b-2', 'border-amber-600'); 
-        activeTab.classList.remove('text-gray-500'); 
-      }
-      document.querySelectorAll('.admin-content').forEach(c => c.classList.add('hidden'));
-      document.getElementById(`tab-${tab}`)?.classList.remove('hidden');
-    };
-
-    // Multiple image upload handling for Add Product
-    const multiFileInput = document.getElementById('product-image-files');
-    const multiPreview = document.getElementById('multi-preview-container');
-    const hiddenImagesJson = document.getElementById('product-images-json');
-    let uploadedImagesBase64 = [];
-
-    if (multiFileInput) {
-      multiFileInput.addEventListener('change', function(e) {
-        const files = Array.from(e.target.files);
-        uploadedImagesBase64 = [];
-        multiPreview.innerHTML = '';
-        if (files.length === 0) { hiddenImagesJson.value = ''; return; }
-        let loaded = 0;
-        files.forEach((file) => {
-          if (file.size > 5 * 1024 * 1024) { showToast(`⚠️ ${file.name} too large (max 5MB)`); return; }
-          const reader = new FileReader();
-          reader.onload = function(ev) {
-            uploadedImagesBase64.push(ev.target.result);
-            const thumbDiv = document.createElement('div');
-            thumbDiv.className = 'gallery-thumb';
-            thumbDiv.innerHTML = `<img src="${ev.target.result}" alt="preview">`;
-            multiPreview.appendChild(thumbDiv);
-            loaded++;
-            if (loaded === files.length) {
-              hiddenImagesJson.value = JSON.stringify(uploadedImagesBase64);
-            }
-          };
-          reader.readAsDataURL(file);
-        });
-      });
+      return 0;
     }
 
-    // Add Product
-    document.getElementById('add-product-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('add-product-btn');
-      btn.disabled = true; btn.textContent = 'Adding...';
-      let imagesArray = [];
-      try { imagesArray = JSON.parse(document.getElementById('product-images-json')?.value || '[]'); } catch(e) { imagesArray = []; }
-      const productData = {
-        type: 'product',
-        name: document.getElementById('product-name').value.trim(),
-        category: document.getElementById('product-category').value,
-        wood_type: document.getElementById('product-wood').value,
-        price: document.getElementById('product-price').value.trim(),
-        images: imagesArray,
-        description: document.getElementById('product-description').value.trim(),
-        customer_name: '', customer_phone: '', customer_message: '',
-        created_at: new Date().toISOString()
-      };
-      const result = await window.dataSdk.create(productData);
-      btn.disabled = false; btn.textContent = '➕ Add Product';
-      if (result.isOk) {
-        document.getElementById('add-product-form').reset();
-        multiPreview.innerHTML = '';
-        hiddenImagesJson.value = '';
-        uploadedImagesBase64 = [];
-        document.getElementById('add-success').classList.remove('hidden');
-        setTimeout(() => document.getElementById('add-success').classList.add('hidden'), 3000);
-        showToast('✅ Product added!');
-      } else showToast('❌ Failed');
-    });
-
-    // Edit Product Functions
-    window.editProduct = async function(id) {
-      const product = products.find(p => p.__backendId === id);
-      if (!product) return;
+    function getProductMainImage(product) {
+      if (!product) return `<span class="text-6xl">🪑</span>`;
       
-      document.getElementById('edit-product-id').value = product.__backendId;
-      document.getElementById('edit-product-name').value = product.name || '';
-      document.getElementById('edit-product-category').value = product.category || 'bed';
-      document.getElementById('edit-product-wood').value = product.wood_type || '';
-      document.getElementById('edit-product-price').value = product.price || '';
-      document.getElementById('edit-product-description').value = product.description || '';
-      
-      renderEditImages(product.images || []);
-      
-      document.getElementById('edit-new-preview').innerHTML = '';
-      document.getElementById('edit-product-images').value = '';
-      
-      document.getElementById('edit-product-modal').classList.remove('hidden');
-    };
-
-    function renderEditImages(images) {
-      const grid = document.getElementById('edit-images-grid');
-      if (!grid) return;
-      
-      if (!images || images.length === 0) {
-        grid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-4">No images yet. Add some below.</p>';
-        return;
+      if (product.image_urls) {
+        const images = product.image_urls.split(',').filter(url => url && url.trim() !== '');
+        if (images.length > 0) {
+          return `<img src="${images[0]}" alt="${product.title || ''}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML+='<span class=\'text-6xl\'>${getCategoryEmoji(product.category)}</span>';">`;
+        }
       }
       
-      grid.innerHTML = images.map((img, index) => `
-        <div class="image-item relative">
-          <img src="${img}" class="w-full h-24 object-cover rounded-lg border-2 ${index === 0 ? 'border-green-500' : 'border-gray-200'}" onclick="setCoverImage(${index})">
-          ${index === 0 ? '<span class="cover-badge">⭐ Cover</span>' : ''}
-          <div class="image-actions">
-            <button type="button" onclick="deleteImage(${index})" class="image-action-btn delete" title="Delete image">🗑️</button>
-            ${index !== 0 ? `<button type="button" onclick="setCoverImage(${index})" class="image-action-btn set-cover" title="Set as cover">⭐</button>` : ''}
+      if (product.image_url && product.image_url.trim() !== '') {
+        return `<img src="${product.image_url}" alt="${product.title || ''}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML+='<span class=\'text-6xl\'>${getCategoryEmoji(product.category)}</span>';">`;
+      }
+      
+      return `<span class="text-6xl">${getCategoryEmoji(product.category)}</span>`;
+    }
+
+    function filterProducts(category) {
+      currentFilter = category;
+      
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.category === category) {
+          btn.classList.add('bg-wood-600', 'text-cream-100');
+          btn.classList.remove('bg-wood-100', 'text-wood-700');
+        } else {
+          btn.classList.remove('bg-wood-600', 'text-cream-100');
+          btn.classList.add('bg-wood-100', 'text-wood-700');
+        }
+      });
+      
+      renderProducts();
+    }
+
+    function searchProducts(query) {
+      searchQuery = query;
+      renderProducts();
+    }
+
+    function getCategoryEmoji(category) {
+      const emojis = {
+        'Beds': '🛏️',
+        'Wardrobes': '🚪',
+        'Almirah': '🗄️',
+        'Racks': '📚',
+        'Doors': '🚪',
+        'Windows': '🪟',
+        'Custom Work': '✨'
+      };
+      return emojis[category] || '🪑';
+    }
+
+    // ===== WOODS =====
+    function renderWoods() {
+      const grid = document.getElementById('woods-grid');
+      if (!grid) return;
+      
+      const displayWoods = woods.length > 0 ? woods : [
+        { name: 'Teak Wood', durability: 'Very High', price_range: 'Premium', usage_type: 'All furniture, outdoor', description: 'Known for its exceptional durability and natural oils that resist moisture and insects.' },
+        { name: 'Sheesham', durability: 'High', price_range: 'High', usage_type: 'Beds, tables, chairs', description: 'Beautiful grain patterns with excellent strength and durability.' },
+        { name: 'Sal Wood', durability: 'Very High', price_range: 'Medium', usage_type: 'Doors, windows, heavy furniture', description: 'One of the hardest woods, extremely durable and termite resistant.' },
+        { name: 'Plywood', durability: 'Medium', price_range: 'Budget', usage_type: 'Cabinets, shelves, interiors', description: 'Versatile engineered wood, great for modern furniture and fixtures.' },
+        { name: 'MDF', durability: 'Medium', price_range: 'Budget', usage_type: 'Wardrobes, decorative items', description: 'Smooth surface ideal for painted finishes and detailed work.' }
+      ];
+      
+      grid.innerHTML = displayWoods.map(wood => `
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="h-48 bg-gradient-to-br from-wood-300 to-wood-500 flex items-center justify-center">
+            ${wood.image_url 
+              ? `<img src="${wood.image_url}" alt="${wood.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-7xl\'>🌳</span>';">`
+              : `<span class="text-7xl">🌳</span>`
+            }
+          </div>
+          <div class="p-6">
+            <h3 class="font-display text-xl font-semibold text-wood-800 mb-3">${wood.name || ''}</h3>
+            <p class="text-wood-600 text-sm mb-4">${wood.description || ''}</p>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-wood-500">Durability</span>
+                <span class="font-medium text-wood-700">${wood.durability || ''}</span>
+              </div>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-wood-500">Price Range</span>
+                <span class="font-medium text-wood-700">${wood.price_range || ''}</span>
+              </div>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-wood-500">Best For</span>
+                <span class="font-medium text-wood-700">${wood.usage_type || ''}</span>
+              </div>
+            </div>
           </div>
         </div>
       `).join('');
-      
-      document.getElementById('edit-images-json').value = JSON.stringify(images);
     }
 
-    window.setCoverImage = function(index) {
-      const imagesJson = document.getElementById('edit-images-json').value;
-      let images = JSON.parse(imagesJson || '[]');
-      
-      if (index > 0 && index < images.length) {
-        const [selectedImage] = images.splice(index, 1);
-        images.unshift(selectedImage);
-        renderEditImages(images);
-        showToast('⭐ Cover image updated');
-      }
-    };
-
-    window.deleteImage = function(index) {
-      const imagesJson = document.getElementById('edit-images-json').value;
-      let images = JSON.parse(imagesJson || '[]');
-      
-      if (index >= 0 && index < images.length) {
-        images.splice(index, 1);
-        renderEditImages(images);
-        showToast('🗑️ Image deleted');
-      }
-    };
-
-    document.getElementById('edit-product-images')?.addEventListener('change', function(e) {
-      const files = Array.from(e.target.files);
-      const preview = document.getElementById('edit-new-preview');
-      preview.innerHTML = '';
-      
-      if (files.length === 0) return;
-      
-      let newImages = [];
-      let loaded = 0;
-      
-      files.forEach((file) => {
-        if (file.size > 5 * 1024 * 1024) { 
-          showToast(`⚠️ ${file.name} too large (max 5MB)`); 
-          return; 
-        }
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-          newImages.push(ev.target.result);
-          const thumbDiv = document.createElement('div');
-          thumbDiv.className = 'gallery-thumb';
-          thumbDiv.innerHTML = `<img src="${ev.target.result}" alt="preview">`;
-          preview.appendChild(thumbDiv);
-          loaded++;
-          if (loaded === files.length) {
-            const existingJson = document.getElementById('edit-images-json').value;
-            let existingImages = JSON.parse(existingJson || '[]');
-            existingImages = [...existingImages, ...newImages];
-            document.getElementById('edit-images-json').value = JSON.stringify(existingImages);
-            renderEditImages(existingImages);
-            preview.innerHTML = '';
-            document.getElementById('edit-product-images').value = '';
-            showToast(`✅ Added ${newImages.length} new image(s)`);
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-    });
-
-    document.getElementById('edit-product-form')?.addEventListener('submit', async (e) => {
+    // ===== CONTACT FORM =====
+    async function submitContactForm(e) {
       e.preventDefault();
-      const btn = document.getElementById('edit-product-btn');
-      btn.disabled = true; btn.textContent = 'Saving...';
       
-      const id = document.getElementById('edit-product-id').value;
-      const product = products.find(p => p.__backendId === id);
-      if (!product) return;
+      const btn = document.getElementById('contact-submit-btn');
+      if (!btn) return;
       
-      let imagesArray = [];
-      try { 
-        imagesArray = JSON.parse(document.getElementById('edit-images-json')?.value || '[]'); 
-      } catch(e) { 
-        imagesArray = []; 
-      }
+      btn.disabled = true;
+      btn.innerHTML = '<span class="animate-spin">⏳</span> Submitting...';
       
-      const updates = {
-        name: document.getElementById('edit-product-name').value.trim(),
-        category: document.getElementById('edit-product-category').value,
-        wood_type: document.getElementById('edit-product-wood').value,
-        price: document.getElementById('edit-product-price').value.trim(),
-        description: document.getElementById('edit-product-description').value.trim(),
-        images: imagesArray
+      const name = document.getElementById('customer-name')?.value || '';
+      const phone = document.getElementById('customer-phone')?.value || '';
+      const address = document.getElementById('customer-address')?.value || '';
+      const workType = document.getElementById('work-type')?.value || '';
+      const woodPref = document.getElementById('wood-preference')?.value || 'Not specified';
+      const description = document.getElementById('description')?.value || '';
+      
+      const requestData = {
+        type: 'request',
+        name: name,
+        phone: phone,
+        address: address,
+        work_type: workType,
+        wood_preference: woodPref,
+        description: description,
+        status: 'Pending',
+        created_at: new Date().toISOString()
       };
       
-      const result = await window.dataSdk.update(product, updates);
-      btn.disabled = false; btn.textContent = '💾 Save Changes';
+      const presetMessage = `*New Customer Request*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n*Work Type:* ${workType}\n*Wood Preference:* ${woodPref}\n*Description:* ${description || 'No description provided'}`;
       
-      if (result.isOk) {
-        document.getElementById('edit-success').classList.remove('hidden');
-        setTimeout(() => {
-          document.getElementById('edit-success').classList.add('hidden');
-          hideEditModal();
-        }, 1500);
-        showToast('✅ Product updated!');
+      const adminWhatsAppUrl = `https://wa.me/91${config.phone_number}?text=${encodeURIComponent(presetMessage)}`;
+      window.open(adminWhatsAppUrl, '_blank');
+      
+      if (window.dataSdk) {
+        const result = await window.dataSdk.create(requestData);
+        
+        if (result && result.isOk) {
+          const form = document.getElementById('contact-form');
+          if (form) form.classList.add('hidden');
+          
+          const success = document.getElementById('contact-success');
+          if (success) success.classList.remove('hidden');
+          
+          showToast('Request submitted successfully!');
+        } else {
+          showToast('Failed to submit. Please try again.', 'error');
+        }
       } else {
-        showToast('❌ Failed to update');
+        customerRequests.push({ ...requestData, __backendId: Date.now().toString() });
+        
+        const form = document.getElementById('contact-form');
+        if (form) form.classList.add('hidden');
+        
+        const success = document.getElementById('contact-success');
+        if (success) success.classList.remove('hidden');
+        
+        renderAdminRequests();
+        updateStats();
+        showToast('Request submitted successfully!');
       }
-    });
-
-    window.hideEditModal = function() {
-      document.getElementById('edit-product-modal').classList.add('hidden');
-    };
-
-    function renderAdminProducts() {
-      const grid = document.getElementById('admin-products-grid');
-      const noProducts = document.getElementById('admin-no-products');
-      if (!grid) return;
-      if (products.length === 0) { grid.innerHTML = ''; noProducts?.classList.remove('hidden'); return; }
-      noProducts?.classList.add('hidden');
       
-      grid.innerHTML = products.map(p => {
-        const imgCount = p.images && Array.isArray(p.images) ? p.images.length : 0;
-        return `<div class="bg-white rounded-xl overflow-hidden shadow-lg">
-          <div class="h-40 bg-gradient-to-br from-amber-200 to-amber-300 flex items-center justify-center relative overflow-hidden">
-            ${p.images && p.images.length ? `<img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover">` : `<div class="text-5xl">${getCategoryEmoji(p.category)}</div>`}
+      btn.disabled = false;
+      btn.innerHTML = '<span>Submit Request</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
+    }
+
+    function resetContactForm() {
+      const form = document.getElementById('contact-form');
+      if (form) {
+        form.reset();
+        form.classList.remove('hidden');
+      }
+      
+      const success = document.getElementById('contact-success');
+      if (success) success.classList.add('hidden');
+    }
+
+    // ===== ADMIN: PRODUCTS MANAGEMENT =====
+    function renderAdminProducts() {
+      const list = document.getElementById('admin-products-list');
+      const empty = document.getElementById('admin-products-empty');
+      
+      if (!list || !empty) return;
+      
+      if (products.length === 0) {
+        list.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      
+      empty.classList.add('hidden');
+      list.innerHTML = products.map(product => {
+        if (!product) return '';
+        
+        const price = product.price ? `₹${Number(product.price).toLocaleString('en-IN')}` : 'Price not set';
+        
+        return `
+        <div class="flex flex-col sm:flex-row gap-4 p-4 bg-wood-50 rounded-xl items-start sm:items-center">
+          <div class="w-16 h-16 bg-wood-200 rounded-lg flex items-center justify-center flex-shrink-0">
+            ${getAdminProductThumbnail(product)}
           </div>
-          <div class="p-4">
-            <h3 class="font-bold text-amber-900 mb-1">${p.name}</h3>
-            <p class="text-sm text-gray-600 mb-2">${getCategoryLabel(p.category)} ${p.wood_type ? '• ' + p.wood_type : ''}</p>
-            <p class="text-sm text-blue-600 mb-2">📸 ${imgCount} image(s)</p>
-            <p class="text-amber-600 font-medium mb-3">${p.price ? '₹' + p.price : 'No price set'}</p>
-            <div class="flex gap-2">
-              <button onclick="editProduct('${p.__backendId}')" class="flex-1 edit-product-btn text-white py-2 rounded-lg text-sm font-medium transition-colors"> ✏️ Edit </button>
-              <button onclick="deleteProduct('${p.__backendId}')" class="flex-1 bg-red-100 hover:bg-red-200 text-red-700 py-2 rounded-lg text-sm font-medium transition-colors"> 🗑️ Delete </button>
+          <div class="flex-1 min-w-0">
+            <h4 class="font-semibold text-wood-800">${product.title || ''}</h4>
+            <p class="text-wood-500 text-sm">${product.category || ''} • ${product.wood_type || ''}</p>
+            <p class="text-wood-600 font-bold">${price}</p>
+            ${product.image_urls ? `<p class="text-wood-400 text-xs">${product.image_urls.split(',').filter(u => u).length} images</p>` : ''}
+          </div>
+          <div class="flex gap-2">
+            <button onclick="editProduct('${product.__backendId}')" class="p-2 bg-wood-200 hover:bg-wood-300 rounded-lg transition-colors">
+              <svg class="w-4 h-4 text-wood-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+              </svg>
+            </button>
+            <button onclick="showDeleteConfirm('product', '${product.__backendId}', '${product.title}')" class="p-2 bg-red-100 hover:bg-red-200 rounded-lg transition-colors">
+              <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `}).join('');
+    }
+
+    function getAdminProductThumbnail(product) {
+      if (!product) return `<span class="text-2xl">🪑</span>`;
+      
+      if (product.image_urls) {
+        const images = product.image_urls.split(',').filter(url => url && url.trim() !== '');
+        if (images.length > 0) {
+          return `<img src="${images[0]}" alt="${product.title || ''}" class="w-full h-full object-cover rounded-lg" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-2xl\'>${getCategoryEmoji(product.category)}</span>';">`;
+        }
+      }
+      
+      if (product.image_url && product.image_url.trim() !== '') {
+        return `<img src="${product.image_url}" alt="${product.title || ''}" class="w-full h-full object-cover rounded-lg" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-2xl\'>${getCategoryEmoji(product.category)}</span>';">`;
+      }
+      
+      return `<span class="text-2xl">${getCategoryEmoji(product.category)}</span>`;
+    }
+
+    function showProductModal(productId = null) {
+      editingProductId = productId;
+      const modal = document.getElementById('product-modal');
+      const title = document.getElementById('product-modal-title');
+      const form = document.getElementById('product-form');
+      
+      if (!modal || !title || !form) return;
+      
+      uploadedImages = [];
+      renderImagePreviews();
+      
+      if (productId) {
+        const product = products.find(p => p && p.__backendId === productId);
+        if (product) {
+          title.textContent = 'Edit Product';
+          
+          document.getElementById('product-id').value = productId;
+          document.getElementById('product-title').value = product.title || '';
+          document.getElementById('product-category').value = product.category || '';
+          document.getElementById('product-wood').value = product.wood_type || '';
+          document.getElementById('product-price').value = product.price || '';
+          document.getElementById('product-description').value = product.description || '';
+          document.getElementById('product-image').value = product.image_url || '';
+          
+          if (product.image_urls) {
+            uploadedImages = product.image_urls.split(',').filter(url => url && url.trim() !== '');
+            renderImagePreviews();
+          }
+        }
+      } else {
+        title.textContent = 'Add Product';
+        form.reset();
+        document.getElementById('product-id').value = '';
+      }
+      
+      modal.classList.remove('hidden');
+    }
+
+    function hideProductModal() {
+      const modal = document.getElementById('product-modal');
+      if (modal) modal.classList.add('hidden');
+      editingProductId = null;
+      uploadedImages = [];
+      renderImagePreviews();
+    }
+
+    async function saveProduct(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('product-submit-btn');
+      if (!btn) return;
+      
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      
+      const productData = {
+        type: 'product',
+        title: document.getElementById('product-title')?.value || '',
+        category: document.getElementById('product-category')?.value || '',
+        wood_type: document.getElementById('product-wood')?.value || '',
+        price: document.getElementById('product-price')?.value || '',
+        description: document.getElementById('product-description')?.value || '',
+        image_url: document.getElementById('product-image')?.value || '',
+        image_urls: uploadedImages.length > 0 ? uploadedImages.join(',') : null,
+        created_at: new Date().toISOString()
+      };
+      
+      if (window.dataSdk) {
+        if (editingProductId) {
+          const existing = products.find(p => p && p.__backendId === editingProductId);
+          if (existing) {
+            const result = await window.dataSdk.update({ ...existing, ...productData });
+            if (result && result.isOk) {
+              showToast('Product updated!');
+            } else {
+              showToast('Failed to update', 'error');
+            }
+          }
+        } else {
+          if (products.length >= 999) {
+            showToast('Maximum products limit reached (999)', 'error');
+            btn.disabled = false;
+            btn.textContent = 'Save Product';
+            return;
+          }
+          const result = await window.dataSdk.create(productData);
+          if (result && result.isOk) {
+            showToast('Product added!');
+          } else {
+            showToast('Failed to add product', 'error');
+          }
+        }
+      } else {
+        if (editingProductId) {
+          const idx = products.findIndex(p => p && p.__backendId === editingProductId);
+          if (idx !== -1) {
+            products[idx] = { ...products[idx], ...productData };
+          }
+        } else {
+          products.push({ ...productData, __backendId: Date.now().toString() });
+        }
+        renderProducts();
+        renderAdminProducts();
+        updateStats();
+        showToast(editingProductId ? 'Product updated!' : 'Product added!');
+      }
+      
+      btn.disabled = false;
+      btn.textContent = 'Save Product';
+      hideProductModal();
+    }
+
+    function editProduct(productId) {
+      showProductModal(productId);
+    }
+
+    // ===== ADMIN: REQUESTS MANAGEMENT =====
+    function renderAdminRequests() {
+      const list = document.getElementById('admin-requests-list');
+      const empty = document.getElementById('admin-requests-empty');
+      
+      if (!list || !empty) return;
+      
+      if (!customerRequests || customerRequests.length === 0) {
+        list.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      
+      empty.classList.add('hidden');
+      list.innerHTML = customerRequests.map(request => {
+        if (!request) return '';
+        
+        return `
+        <div class="p-4 bg-wood-50 rounded-xl">
+          <div class="flex flex-col sm:flex-row gap-4 justify-between">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-2">
+                <h4 class="font-semibold text-wood-800">${request.name || ''}</h4>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium ${getStatusClass(request.status)}">${request.status || 'Pending'}</span>
+              </div>
+              <p class="text-wood-600 text-sm mb-1">📞 ${request.phone || ''}</p>
+              <p class="text-wood-600 text-sm mb-1">📍 ${request.address || ''}</p>
+              <p class="text-wood-600 text-sm">🪵 ${request.work_type || ''} • ${request.wood_preference || 'Not specified'}</p>
+              ${request.description ? `<p class="text-wood-500 text-sm mt-2 italic">"${request.description}"</p>` : ''}
+            </div>
+            <div class="flex flex-col gap-2">
+              <select onchange="updateRequestStatus('${request.__backendId}', this.value)" class="px-3 py-2 rounded-lg border border-wood-200 text-sm">
+                <option value="Pending" ${(request.status || 'Pending') === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="In Progress" ${request.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                <option value="Completed" ${request.status === 'Completed' ? 'selected' : ''}>Completed</option>
+              </select>
+              <div class="flex gap-2">
+                <a href="https://wa.me/91${config.phone_number}?text=${encodeURIComponent('Regarding request from ' + (request.name || '') + ' - ' + (request.work_type || ''))}" target="_blank" class="flex-1 p-2 bg-green-100 hover:bg-green-200 rounded-lg transition-colors text-center">
+                  <svg class="w-4 h-4 text-green-600 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                  </svg>
+                </a>
+                <a href="tel:${request.phone || ''}" class="flex-1 p-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors text-center">
+                  <svg class="w-4 h-4 text-blue-600 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                  </svg>
+                </a>
+                <button onclick="showDeleteConfirm('request', '${request.__backendId}', '${request.name || ''}')" class="flex-1 p-2 bg-red-100 hover:bg-red-200 rounded-lg transition-colors">
+                  <svg class="w-4 h-4 text-red-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
-        </div>`;
-      }).join('');
+        </div>
+      `}).join('');
     }
 
-    function renderInquiries() {
-      const list = document.getElementById('inquiries-list');
-      const noInquiries = document.getElementById('no-inquiries');
-      if (!list) return;
-      if (inquiries.length === 0) { list.innerHTML = ''; noInquiries?.classList.remove('hidden'); return; }
-      noInquiries?.classList.add('hidden');
-      const sorted = [...inquiries].sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0));
-      list.innerHTML = sorted.map(inq => `<div class="bg-white rounded-xl shadow-md p-6"><div class="flex flex-col md:flex-row justify-between gap-4"><div class="flex-1"><div class="flex items-center gap-3 mb-2"><span class="text-2xl">👤</span><div><h3 class="font-bold text-lg text-amber-900">${inq.customer_name || 'Unknown'}</h3><a href="tel:${inq.customer_phone}" class="text-amber-600 hover:underline">${inq.customer_phone}</a></div></div>${inq.customer_message ? `<p class="text-gray-600 mt-2 bg-gray-50 p-3 rounded-lg">"${inq.customer_message}"</p>` : ''}<p class="text-sm text-gray-400 mt-2">${formatDate(inq.created_at)}</p></div><div class="flex flex-col gap-2"><a href="https://wa.me/91${inq.customer_phone?.replace(/\D/g, '')}" target="_blank" rel="noopener noreferrer" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-center flex items-center justify-center gap-2">💬 WhatsApp</a><a href="tel:${inq.customer_phone}" class="bg-amber-100 hover:bg-amber-200 text-amber-800 px-4 py-2 rounded-lg text-center flex items-center justify-center gap-2">📞 Call</a><button onclick="deleteInquiry('${inq.__backendId}')" class="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg text-sm"> 🗑️ Delete </button></div></div></div>`).join('');
+    function getStatusClass(status) {
+      switch (status) {
+        case 'Pending': return 'bg-yellow-100 text-yellow-700';
+        case 'In Progress': return 'bg-blue-100 text-blue-700';
+        case 'Completed': return 'bg-green-100 text-green-700';
+        default: return 'bg-gray-100 text-gray-700';
+      }
     }
 
-    function formatDate(d) { if (!d) return ''; try { return new Date(d).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }); } catch(e){ return d; } }
-
-    window.filterProducts = function(category) {
-      currentFilter = category;
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        if (btn.dataset.filter === category) { 
-          btn.classList.add('bg-amber-600', 'text-white'); 
-          btn.classList.remove('bg-amber-100', 'text-amber-800'); 
-        } else { 
-          btn.classList.remove('bg-amber-600', 'text-white'); 
-          btn.classList.add('bg-amber-100', 'text-amber-800'); 
+    async function updateRequestStatus(requestId, newStatus) {
+      const request = customerRequests.find(r => r && r.__backendId === requestId);
+      if (!request) return;
+      
+      if (window.dataSdk) {
+        const result = await window.dataSdk.update({ ...request, status: newStatus });
+        if (result && result.isOk) {
+          showToast('Status updated!');
         }
-      });
-      renderProducts();
-    };
-
-    window.deleteProduct = async function(id) {
-      if (!confirm('Are you sure you want to delete this product?')) return;
-      const p = products.find(x => x.__backendId === id); if (!p) return;
-      const res = await window.dataSdk.delete(p);
-      if (res.isOk) showToast('🗑️ Product deleted'); else showToast('❌ Failed');
-    };
-    
-    window.deleteInquiry = async function(id) {
-      if (!confirm('Are you sure you want to delete this inquiry?')) return;
-      const i = inquiries.find(x => x.__backendId === id); if (!i) return;
-      await window.dataSdk.delete(i); showToast('🗑️ Inquiry deleted');
-    };
-
-    document.getElementById('inquiry-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('customer-name').value.trim();
-      const phone = document.getElementById('customer-phone').value.trim();
-      const req = document.getElementById('customer-requirement').value;
-      const msg = document.getElementById('customer-message').value.trim();
-      const btn = document.getElementById('submit-btn');
-      if (!name || !phone) return;
-      btn.disabled = true; btn.innerHTML = '<span class="animate-spin">⏳</span> Sending...';
-      const inquiryData = { 
-        type: 'inquiry', 
-        name: '', 
-        category: req, 
-        wood_type: '', 
-        price: '', 
-        images: [], 
-        description: '', 
-        customer_name: name, 
-        customer_phone: phone, 
-        customer_message: msg, 
-        created_at: new Date().toISOString() 
-      };
-      const result = await window.dataSdk.create(inquiryData);
-      btn.disabled = false; btn.innerHTML = '<span>💬</span> Send Inquiry via WhatsApp';
-      if (result.isOk) {
-        const wMsg = `🪵 *New Inquiry - Anjali Furniture Works*\n\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n${req ? '📦 *Looking for:* ' + req : ''}\n${msg ? '💬 *Message:* ' + msg : ''}\n\n_Sent from website_`;
-        window.open(`https://wa.me/918386076109?text=${encodeURIComponent(wMsg)}`, '_blank');
-        document.getElementById('inquiry-form').reset();
-        showToast('✅ Inquiry sent!');
-      } else showToast('❌ Failed. Please call.');
-    });
-
-    function showToast(m) { 
-      const toast = document.getElementById('toast'); 
-      const msg = document.getElementById('toast-message'); 
-      if (msg) msg.textContent = m; 
-      if (toast) { 
-        toast.classList.remove('hidden'); 
-        setTimeout(() => toast.classList.add('hidden'), 3000); 
-      } 
+      } else {
+        request.status = newStatus;
+        renderAdminRequests();
+        updateStats();
+        showToast('Status updated!');
+      }
     }
 
-    initApp();
+    // ===== ADMIN: WOODS MANAGEMENT =====
+    function renderAdminWoods() {
+      const list = document.getElementById('admin-woods-list');
+      const empty = document.getElementById('admin-woods-empty');
+      
+      if (!list || !empty) return;
+      
+      if (woods.length === 0) {
+        list.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      
+      empty.classList.add('hidden');
+      list.innerHTML = woods.map(wood => {
+        if (!wood) return '';
+        
+        return `
+        <div class="flex flex-col sm:flex-row gap-4 p-4 bg-wood-50 rounded-xl items-start sm:items-center">
+          <div class="w-16 h-16 bg-gradient-to-br from-wood-300 to-wood-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-2xl">🌳</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="font-semibold text-wood-800">${wood.name || ''}</h4>
+            <p class="text-wood-500 text-sm">${wood.durability || ''} durability • ${wood.price_range || ''}</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="editWood('${wood.__backendId}')" class="p-2 bg-wood-200 hover:bg-wood-300 rounded-lg transition-colors">
+              <svg class="w-4 h-4 text-wood-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+              </svg>
+            </button>
+            <button onclick="showDeleteConfirm('wood', '${wood.__backendId}', '${wood.name || ''}')" class="p-2 bg-red-100 hover:bg-red-200 rounded-lg transition-colors">
+              <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `}).join('');
+    }
+
+    function showWoodModal(woodId = null) {
+      editingWoodId = woodId;
+      const modal = document.getElementById('wood-modal');
+      const title = document.getElementById('wood-modal-title');
+      const form = document.getElementById('wood-form');
+      
+      if (!modal || !title || !form) return;
+      
+      if (woodId) {
+        const wood = woods.find(w => w && w.__backendId === woodId);
+        if (wood) {
+          title.textContent = 'Edit Wood Type';
+          
+          document.getElementById('wood-id').value = woodId;
+          document.getElementById('wood-name').value = wood.name || '';
+          document.getElementById('wood-durability').value = wood.durability || '';
+          document.getElementById('wood-price').value = wood.price_range || '';
+          document.getElementById('wood-usage').value = wood.usage_type || '';
+          document.getElementById('wood-description').value = wood.description || '';
+          document.getElementById('wood-image').value = wood.image_url || '';
+        }
+      } else {
+        title.textContent = 'Add Wood Type';
+        form.reset();
+        document.getElementById('wood-id').value = '';
+      }
+      
+      modal.classList.remove('hidden');
+    }
+
+    function hideWoodModal() {
+      const modal = document.getElementById('wood-modal');
+      if (modal) modal.classList.add('hidden');
+      editingWoodId = null;
+    }
+
+    async function saveWood(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('wood-submit-btn');
+      if (!btn) return;
+      
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      
+      const woodData = {
+        type: 'wood',
+        name: document.getElementById('wood-name')?.value || '',
+        durability: document.getElementById('wood-durability')?.value || '',
+        price_range: document.getElementById('wood-price')?.value || '',
+        usage_type: document.getElementById('wood-usage')?.value || '',
+        description: document.getElementById('wood-description')?.value || '',
+        image_url: document.getElementById('wood-image')?.value || '',
+        created_at: new Date().toISOString()
+      };
+      
+      if (window.dataSdk) {
+        if (editingWoodId) {
+          const existing = woods.find(w => w && w.__backendId === editingWoodId);
+          if (existing) {
+            const result = await window.dataSdk.update({ ...existing, ...woodData });
+            if (result && result.isOk) {
+              showToast('Wood type updated!');
+            }
+          }
+        } else {
+          const result = await window.dataSdk.create(woodData);
+          if (result && result.isOk) {
+            showToast('Wood type added!');
+          }
+        }
+      } else {
+        if (editingWoodId) {
+          const idx = woods.findIndex(w => w && w.__backendId === editingWoodId);
+          if (idx !== -1) {
+            woods[idx] = { ...woods[idx], ...woodData };
+          }
+        } else {
+          woods.push({ ...woodData, __backendId: Date.now().toString() });
+        }
+        renderWoods();
+        renderAdminWoods();
+        showToast(editingWoodId ? 'Wood type updated!' : 'Wood type added!');
+      }
+      
+      btn.disabled = false;
+      btn.textContent = 'Save Wood Type';
+      hideWoodModal();
+    }
+
+    function editWood(woodId) {
+      showWoodModal(woodId);
+    }
+
+    // ===== DELETE CONFIRMATION =====
+    function showDeleteConfirm(type, id, name) {
+      const modal = document.getElementById('delete-modal');
+      const message = document.getElementById('delete-message');
+      
+      if (!modal || !message) return;
+      
+      message.textContent = `Are you sure you want to delete "${name}"?`;
+      
+      deleteCallback = async () => {
+        let item;
+        if (type === 'product') {
+          item = products.find(p => p && p.__backendId === id);
+        } else if (type === 'request') {
+          item = customerRequests.find(r => r && r.__backendId === id);
+        } else if (type === 'wood') {
+          item = woods.find(w => w && w.__backendId === id);
+        }
+        
+        if (item && window.dataSdk) {
+          const result = await window.dataSdk.delete(item);
+          if (result && result.isOk) {
+            showToast('Deleted successfully!');
+          }
+        } else if (item) {
+          if (type === 'product') {
+            products = products.filter(p => p && p.__backendId !== id);
+          } else if (type === 'request') {
+            customerRequests = customerRequests.filter(r => r && r.__backendId !== id);
+          } else if (type === 'wood') {
+            woods = woods.filter(w => w && w.__backendId !== id);
+          }
+          renderProducts();
+          renderWoods();
+          renderAdminProducts();
+          renderAdminRequests();
+          renderAdminWoods();
+          updateStats();
+          showToast('Deleted successfully!');
+        }
+        
+        hideDeleteModal();
+      };
+      
+      modal.classList.remove('hidden');
+    }
+
+    function hideDeleteModal() {
+      const modal = document.getElementById('delete-modal');
+      if (modal) modal.classList.add('hidden');
+      deleteCallback = null;
+    }
+
+    function confirmDelete() {
+      if (deleteCallback) {
+        deleteCallback();
+      }
+    }
+
+    // ===== STATS =====
+    function updateStats() {
+      const statProducts = document.getElementById('stat-products');
+      const statRequests = document.getElementById('stat-requests');
+      const statPending = document.getElementById('stat-pending');
+      const statCompleted = document.getElementById('stat-completed');
+      
+      if (statProducts) statProducts.textContent = products.length;
+      if (statRequests) statRequests.textContent = customerRequests.length;
+      if (statPending) statPending.textContent = customerRequests.filter(r => r && (r.status || 'Pending') === 'Pending').length;
+      if (statCompleted) statCompleted.textContent = customerRequests.filter(r => r && r.status === 'Completed').length;
+    }
+
+    // ===== TOAST =====
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const icon = document.getElementById('toast-icon');
+      const msg = document.getElementById('toast-message');
+      
+      if (!toast || !icon || !msg) return;
+      
+      msg.textContent = message;
+      
+      if (type === 'error') {
+        icon.classList.remove('text-green-400');
+        icon.classList.add('text-red-400');
+      } else {
+        icon.classList.remove('text-red-400');
+        icon.classList.add('text-green-400');
+      }
+      
+      toast.classList.remove('hidden');
+      
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+
+    // ===== INITIALIZATION =====
+    async function init() {
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities: (config) => ({
+            recolorables: [],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (config) => new Map()
+        });
+      }
+      
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(dataHandler);
+        if (!result || !result.isOk) {
+          console.error('Failed to initialize Data SDK');
+        }
+      }
+      
+      onConfigChange(config);
+      renderProducts();
+      renderWoods();
+      renderAdminRequests();
+      updateStats();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   </script>
-</body>
+ </body>
 </html>
-
-
