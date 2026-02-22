@@ -6,8 +6,7 @@
   <meta name="description" content="Anjali Furniture Works - Quality Wooden Furniture in Jaipur. Custom beds, wardrobes, doors, windows and more.">
   <title>Anjali Furniture Works - Quality Wooden Furniture</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="/_sdk/data_sdk.js"></script>
+  
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
@@ -708,22 +707,20 @@
    </div>
   </div>
   <script>
+    // API Configuration
+    const API_BASE_URL = 'https://anjali-furniture-backend.onrender.com';
+
     // Admin Credentials
     const ADMIN_USERNAME = 'ANKIT JATWA';
     const ADMIN_PASSWORD = 'ANKITJATWA@123JAIPUR';
 
-    // ==========================================
-    // APPLICATION STATE & DATA
-    // ==========================================
-    
-    const defaultConfig = {
+    // Application State
+    let config = {
       shop_name: 'Anjali Furniture Works',
       tagline: 'Crafting Dreams in Wood Since Generations',
       phone_number: '8386076109',
       address: '138, Metrocity, Swarn Garden Wali Gali, Manyawas, Mansarovar, Jaipur'
     };
-
-    let config = { ...defaultConfig };
     let isLoggedIn = false;
     let currentPage = 'home';
     let currentCategory = 'all';
@@ -731,27 +728,90 @@
     let customerRequests = [];
     let currentProductImages = [];
     let currentImageIndex = 0;
-    
-    // Sample Products Data
-    let products = [
-      { id: '1', title: 'Royal King Size Bed', category: 'Beds', wood_type: 'Teak Wood', price: '₹35,000 - ₹50,000', description: 'Elegant king size bed with intricate carvings and premium finish. Perfect for master bedrooms.', images: [] },
-      { id: '2', title: 'Classic Wardrobe', category: 'Wardrobes', wood_type: 'Sheesham', price: '₹28,000 - ₹40,000', description: 'Spacious 3-door wardrobe with mirror and multiple compartments.', images: [] },
-      { id: '3', title: 'Modern Almirah', category: 'Almirah', wood_type: 'Plywood', price: '₹15,000 - ₹22,000', description: 'Contemporary design with ample storage space and smooth sliding doors.', images: [] },
-      { id: '4', title: 'Designer Main Door', category: 'Doors', wood_type: 'Sal Wood', price: '₹12,000 - ₹18,000', description: 'Hand-carved main entrance door with traditional motifs.', images: [] },
-      { id: '5', title: 'French Windows', category: 'Windows', wood_type: 'Teak Wood', price: '₹500 - ₹800/sqft', description: 'Elegant French-style windows with brass fittings.', images: [] },
-      { id: '6', title: 'Book Rack', category: 'Racks', wood_type: 'Sheesham', price: '₹8,000 - ₹12,000', description: 'Multi-tier book rack perfect for home library or study room.', images: [] },
-      { id: '7', title: 'Custom TV Unit', category: 'Custom Work', wood_type: 'Plywood', price: '₹20,000 - ₹35,000', description: 'Modern TV unit with cable management and display shelves.', images: [] },
-      { id: '8', title: 'Queen Size Bed', category: 'Beds', wood_type: 'Sheesham', price: '₹28,000 - ₹40,000', description: 'Comfortable queen size bed with storage underneath.', images: [] }
-    ];
+    let products = [];
+    let woods = [];
 
-    // Sample Woods Data
-    let woods = [
-      { id: '1', name: 'Teak Wood', durability: 'Excellent', price_range: '₹3000-5000/sqft', usage: 'Premium Furniture, Doors, Windows', description: 'Known for its durability and natural oils that make it resistant to termites and weather. The gold standard in furniture making.' },
-      { id: '2', name: 'Sheesham', durability: 'Very Good', price_range: '₹1500-2500/sqft', usage: 'Furniture, Decorative Items', description: 'Also known as Indian Rosewood, prized for its rich grain patterns and excellent durability. Popular choice for traditional furniture.' },
-      { id: '3', name: 'Sal Wood', durability: 'Excellent', price_range: '₹1200-2000/sqft', usage: 'Doors, Windows, Structural Work', description: 'Extremely hard and durable wood, ideal for heavy-duty applications. Resistant to moisture and termites.' },
-      { id: '4', name: 'Plywood', durability: 'Good', price_range: '₹80-200/sqft', usage: 'Wardrobes, Cabinets, Partitions', description: 'Engineered wood made from thin sheets of wood veneer. Cost-effective and versatile for modern furniture.' },
-      { id: '5', name: 'MDF', durability: 'Moderate', price_range: '₹40-80/sqft', usage: 'Cabinets, Decorative Panels', description: 'Medium Density Fiberboard - smooth surface ideal for painted finishes. Budget-friendly option for interior furniture.' }
-    ];
+    // ==========================================
+    // API FUNCTIONS
+    // ==========================================
+
+    async function apiCall(endpoint, method = 'GET', data = null) {
+        const options = {
+            method,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        if (data) {
+            options.body = JSON.stringify(data);
+        }
+
+        // Add auth token for admin endpoints
+        if (isLoggedIn && (endpoint.includes('requests') || endpoint.includes('products') || endpoint.includes('woods') || endpoint.includes('config'))) {
+            const token = localStorage.getItem('adminToken');
+            if (token) {
+                options.headers['Authorization'] = `Bearer ${token}`;
+            }
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error || 'API call failed');
+            }
+            
+            return result.data;
+        } catch (error) {
+            console.error('API Error:', error);
+            showToast(error.message, 'error');
+            return null;
+        }
+    }
+
+    // Load initial data
+    async function loadInitialData() {
+        // Check for existing login
+        const token = localStorage.getItem('adminToken');
+        if (token) {
+            isLoggedIn = true;
+        }
+
+        // Load config
+        const configData = await apiCall('/config');
+        if (configData) {
+            config = { ...config, ...configData };
+            updateUIWithConfig();
+        }
+
+        // Load products
+        const productsData = await apiCall('/products');
+        if (productsData) {
+            products = productsData;
+        }
+
+        // Load woods
+        const woodsData = await apiCall('/woods');
+        if (woodsData) {
+            woods = woodsData;
+        }
+
+        // Load requests if logged in
+        if (isLoggedIn) {
+            const requestsData = await apiCall('/requests');
+            if (requestsData) {
+                customerRequests = requestsData;
+                updateDashboardStats();
+                renderRequestsTable();
+                renderRecentRequests();
+            }
+        }
+
+        renderProducts();
+        renderWoods();
+    }
 
     // ==========================================
     // ELEMENT SDK INITIALIZATION
@@ -760,9 +820,9 @@
     async function initElementSdk() {
       if (window.elementSdk) {
         await window.elementSdk.init({
-          defaultConfig,
+          defaultConfig: config,
           onConfigChange: async (newConfig) => {
-            config = { ...defaultConfig, ...newConfig };
+            config = { ...config, ...newConfig };
             updateUIWithConfig();
           },
           mapToCapabilities: (cfg) => ({
@@ -772,21 +832,21 @@
             fontSizeable: undefined
           }),
           mapToEditPanelValues: (cfg) => new Map([
-            ['shop_name', cfg.shop_name || defaultConfig.shop_name],
-            ['tagline', cfg.tagline || defaultConfig.tagline],
-            ['phone_number', cfg.phone_number || defaultConfig.phone_number],
-            ['address', cfg.address || defaultConfig.address]
+            ['shop_name', cfg.shop_name || config.shop_name],
+            ['tagline', cfg.tagline || config.tagline],
+            ['phone_number', cfg.phone_number || config.phone_number],
+            ['address', cfg.address || config.address]
           ])
         });
-        config = { ...defaultConfig, ...window.elementSdk.config };
+        config = { ...config, ...window.elementSdk.config };
       }
     }
 
     function updateUIWithConfig() {
-      const shopName = config.shop_name || defaultConfig.shop_name;
-      const phone = config.phone_number || defaultConfig.phone_number;
-      const address = config.address || defaultConfig.address;
-      const tagline = config.tagline || defaultConfig.tagline;
+      const shopName = config.shop_name || 'Anjali Furniture Works';
+      const phone = config.phone_number || '8386076109';
+      const address = config.address || '138, Metrocity, Swarn Garden Wali Gali, Manyawas, Mansarovar, Jaipur';
+      const tagline = config.tagline || 'Crafting Dreams in Wood Since Generations';
 
       document.getElementById('nav-shop-name').textContent = shopName;
       document.getElementById('hero-shop-name').textContent = shopName;
@@ -902,7 +962,7 @@
 *Work Type:* ${requestData.work_type}
 *Wood Preference:* ${requestData.wood_preference || 'Not specified'}
 *Description:* ${requestData.description}
-*Time:* ${new Date(requestData.created_at).toLocaleString()}
+*Time:* ${new Date().toLocaleString()}
 
 Please contact the customer as soon as possible.`;
 
@@ -1069,57 +1129,35 @@ Please contact the customer as soon as possible.`;
     // ==========================================
 
     async function submitContactForm(e) {
-      e.preventDefault();
-      
-      const submitBtn = document.getElementById('submit-btn');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div><span>Submitting...</span>';
-
-      const formData = {
-        type: 'customer_request',
-        name: document.getElementById('customer-name').value,
-        phone: document.getElementById('customer-phone').value,
-        address: document.getElementById('customer-address').value,
-        work_type: document.getElementById('work-type').value,
-        wood_preference: document.getElementById('wood-preference').value || 'Not specified',
-        description: document.getElementById('customer-description').value,
-        status: 'Pending',
-        created_at: new Date().toISOString(),
-        id: Date.now().toString()
-      };
-
-      let success = false;
-
-      if (window.dataSdk) {
-        const result = await window.dataSdk.create(formData);
-        if (result.isOk) {
-          success = true;
-          // Add to local array immediately
-          customerRequests.push({ ...formData, __backendId: result.data?.__backendId || formData.id });
-          updateDashboardStats();
-          renderRequestsTable();
-          renderRecentRequests();
-          showToast('Request submitted successfully!');
-        } else {
-          showToast('Failed to submit. Please try again.', 'error');
-        }
-      } else {
-        // Fallback when no SDK
-        customerRequests.push(formData);
-        success = true;
-        showToast('Request submitted successfully!');
-      }
-
-      if (success) {
-        // Send WhatsApp notification to admin
-        sendWhatsAppNotification(formData);
+        e.preventDefault();
         
-        document.getElementById('contact-form').classList.add('hidden');
-        document.getElementById('form-success').classList.remove('hidden');
-      }
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div><span>Submitting...</span>';
 
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = '<span>Submit Request</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
+        const formData = {
+            name: document.getElementById('customer-name').value,
+            phone: document.getElementById('customer-phone').value,
+            address: document.getElementById('customer-address').value,
+            work_type: document.getElementById('work-type').value,
+            wood_preference: document.getElementById('wood-preference').value || 'Not specified',
+            description: document.getElementById('customer-description').value,
+            status: 'Pending'
+        };
+
+        const result = await apiCall('/requests', 'POST', formData);
+
+        if (result) {
+            // Send WhatsApp notification
+            sendWhatsAppNotification(formData);
+            
+            document.getElementById('contact-form').classList.add('hidden');
+            document.getElementById('form-success').classList.remove('hidden');
+            showToast('Request submitted successfully!');
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Submit Request</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
     }
 
     function resetContactForm() {
@@ -1132,26 +1170,32 @@ Please contact the customer as soon as possible.`;
     // AUTHENTICATION
     // ==========================================
 
-    function handleLogin(e) {
-      e.preventDefault();
-      
-      const username = document.getElementById('admin-username').value;
-      const password = document.getElementById('admin-password').value;
-      const errorDiv = document.getElementById('login-error');
+    async function handleLogin(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('admin-username').value;
+        const password = document.getElementById('admin-password').value;
+        const errorDiv = document.getElementById('login-error');
 
-      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        isLoggedIn = true;
-        errorDiv.classList.add('hidden');
-        navigateTo('dashboard');
-        showToast('Welcome back, Admin!');
-      } else {
-        errorDiv.textContent = 'Invalid username or password';
-        errorDiv.classList.remove('hidden');
-      }
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+            isLoggedIn = true;
+            // Generate simple token (in production, use proper JWT)
+            const token = btoa(`${username}:${Date.now()}`);
+            localStorage.setItem('adminToken', token);
+            
+            errorDiv.classList.add('hidden');
+            await loadInitialData(); // Reload data with auth
+            navigateTo('dashboard');
+            showToast('Welcome back, Admin!');
+        } else {
+            errorDiv.textContent = 'Invalid username or password';
+            errorDiv.classList.remove('hidden');
+        }
     }
 
     function handleLogout() {
       isLoggedIn = false;
+      localStorage.removeItem('adminToken');
       navigateTo('home');
       showToast('Logged out successfully');
     }
@@ -1265,31 +1309,22 @@ Please contact the customer as soon as possible.`;
     }
 
     async function updateRequestStatus(id, newStatus) {
-      const request = customerRequests.find(r => (r.__backendId === id) || (r.id === id));
-      if (!request) return;
-
-      if (window.dataSdk) {
-        const result = await window.dataSdk.update({ ...request, status: newStatus });
-        if (result.isOk) {
-          request.status = newStatus;
-          updateDashboardStats();
-          renderRequestsTable();
-          renderRecentRequests();
-          showToast('Status updated');
-        } else {
-          showToast('Failed to update status', 'error');
+        const result = await apiCall(`/requests/${id}`, 'PATCH', { status: newStatus });
+        
+        if (result) {
+            const request = customerRequests.find(r => r.id == id);
+            if (request) {
+                request.status = newStatus;
+                updateDashboardStats();
+                renderRequestsTable();
+                renderRecentRequests();
+                showToast('Status updated');
+            }
         }
-      } else {
-        request.status = newStatus;
-        updateDashboardStats();
-        renderRequestsTable();
-        renderRecentRequests();
-        showToast('Status updated');
-      }
     }
 
     function viewRequest(id) {
-      const request = customerRequests.find(r => (r.__backendId === id) || (r.id === id));
+      const request = customerRequests.find(r => r.id == id);
       if (!request) return;
 
       const details = document.getElementById('request-details');
@@ -1344,29 +1379,16 @@ Please contact the customer as soon as possible.`;
     }
 
     async function deleteRequest(id) {
-      const request = customerRequests.find(r => (r.__backendId === id) || (r.id === id));
-      if (!request) return;
-
-      if (confirm('Are you sure you want to delete this request?')) {
-        if (window.dataSdk) {
-          const result = await window.dataSdk.delete(request);
-          if (result.isOk) {
-            customerRequests = customerRequests.filter(r => (r.__backendId !== id) && (r.id !== id));
-            updateDashboardStats();
-            renderRequestsTable();
-            renderRecentRequests();
-            showToast('Request deleted');
-          } else {
-            showToast('Failed to delete', 'error');
-          }
-        } else {
-          customerRequests = customerRequests.filter(r => (r.__backendId !== id) && (r.id !== id));
-          updateDashboardStats();
-          renderRequestsTable();
-          renderRecentRequests();
-          showToast('Request deleted');
+        if (confirm('Are you sure you want to delete this request?')) {
+            const result = await apiCall(`/requests/${id}`, 'DELETE');
+            if (result) {
+                customerRequests = customerRequests.filter(r => r.id != id);
+                updateDashboardStats();
+                renderRequestsTable();
+                renderRecentRequests();
+                showToast('Request deleted');
+            }
         }
-      }
     }
 
     // ==========================================
@@ -1464,34 +1486,40 @@ Please contact the customer as soon as possible.`;
       renderImageGallery();
     }
 
-    function saveProduct(e) {
-      e.preventDefault();
-      
-      const id = document.getElementById('product-id').value;
-      const productData = {
-        id: id || Date.now().toString(),
-        title: document.getElementById('product-title').value,
-        category: document.getElementById('product-category').value,
-        wood_type: document.getElementById('product-wood').value,
-        price: document.getElementById('product-price').value,
-        description: document.getElementById('product-description').value,
-        images: currentProductImages
-      };
+    async function saveProduct(e) {
+        e.preventDefault();
+        
+        const id = document.getElementById('product-id').value;
+        const productData = {
+            title: document.getElementById('product-title').value,
+            category: document.getElementById('product-category').value,
+            wood_type: document.getElementById('product-wood').value,
+            price: document.getElementById('product-price').value,
+            description: document.getElementById('product-description').value,
+            images: currentProductImages
+        };
 
-      if (id) {
-        const index = products.findIndex(p => p.id === id);
-        if (index !== -1) {
-          products[index] = productData;
+        let result;
+        if (id) {
+            result = await apiCall(`/products/${id}`, 'PUT', productData);
+            if (result) {
+                const index = products.findIndex(p => p.id == id);
+                if (index !== -1) products[index] = result;
+                showToast('Product updated');
+            }
+        } else {
+            result = await apiCall('/products', 'POST', productData);
+            if (result) {
+                products.push(result);
+                showToast('Product added');
+            }
         }
-        showToast('Product updated');
-      } else {
-        products.push(productData);
-        showToast('Product added');
-      }
 
-      closeProductModal();
-      renderAdminProducts();
-      updateDashboardStats();
+        if (result) {
+            closeProductModal();
+            renderAdminProducts();
+            updateDashboardStats();
+        }
     }
 
     function editProduct(id) {
@@ -1501,13 +1529,16 @@ Please contact the customer as soon as possible.`;
       }
     }
 
-    function deleteProduct(id) {
-      if (confirm('Are you sure you want to delete this product?')) {
-        products = products.filter(p => p.id !== id);
-        renderAdminProducts();
-        updateDashboardStats();
-        showToast('Product deleted');
-      }
+    async function deleteProduct(id) {
+        if (confirm('Are you sure you want to delete this product?')) {
+            const result = await apiCall(`/products/${id}`, 'DELETE');
+            if (result) {
+                products = products.filter(p => p.id != id);
+                renderAdminProducts();
+                updateDashboardStats();
+                showToast('Product deleted');
+            }
+        }
     }
 
     // ==========================================
@@ -1557,32 +1588,38 @@ Please contact the customer as soon as possible.`;
       document.getElementById('wood-modal').classList.add('hidden');
     }
 
-    function saveWood(e) {
-      e.preventDefault();
-      
-      const id = document.getElementById('wood-id').value;
-      const woodData = {
-        id: id || Date.now().toString(),
-        name: document.getElementById('wood-name').value,
-        durability: document.getElementById('wood-durability').value,
-        price_range: document.getElementById('wood-price').value,
-        usage: document.getElementById('wood-usage').value,
-        description: document.getElementById('wood-description').value
-      };
+    async function saveWood(e) {
+        e.preventDefault();
+        
+        const id = document.getElementById('wood-id').value;
+        const woodData = {
+            name: document.getElementById('wood-name').value,
+            durability: document.getElementById('wood-durability').value,
+            price_range: document.getElementById('wood-price').value,
+            usage: document.getElementById('wood-usage').value,
+            description: document.getElementById('wood-description').value
+        };
 
-      if (id) {
-        const index = woods.findIndex(w => w.id === id);
-        if (index !== -1) {
-          woods[index] = woodData;
+        let result;
+        if (id) {
+            result = await apiCall(`/woods/${id}`, 'PUT', woodData);
+            if (result) {
+                const index = woods.findIndex(w => w.id == id);
+                if (index !== -1) woods[index] = result;
+                showToast('Wood type updated');
+            }
+        } else {
+            result = await apiCall('/woods', 'POST', woodData);
+            if (result) {
+                woods.push(result);
+                showToast('Wood type added');
+            }
         }
-        showToast('Wood type updated');
-      } else {
-        woods.push(woodData);
-        showToast('Wood type added');
-      }
 
-      closeWoodModal();
-      renderAdminWoods();
+        if (result) {
+            closeWoodModal();
+            renderAdminWoods();
+        }
     }
 
     function editWood(id) {
@@ -1592,12 +1629,15 @@ Please contact the customer as soon as possible.`;
       }
     }
 
-    function deleteWood(id) {
-      if (confirm('Are you sure you want to delete this wood type?')) {
-        woods = woods.filter(w => w.id !== id);
-        renderAdminWoods();
-        showToast('Wood type deleted');
-      }
+    async function deleteWood(id) {
+        if (confirm('Are you sure you want to delete this wood type?')) {
+            const result = await apiCall(`/woods/${id}`, 'DELETE');
+            if (result) {
+                woods = woods.filter(w => w.id != id);
+                renderAdminWoods();
+                showToast('Wood type deleted');
+            }
+        }
     }
 
     // ==========================================
@@ -1636,8 +1676,13 @@ Please contact the customer as soon as possible.`;
       await initElementSdk();
       await initDataSdk();
       
+      // Load all data
+      await loadInitialData();
+      
+      // Update UI
       updateUIWithConfig();
       
+      // Setup category buttons
       document.querySelectorAll('.category-btn').forEach(btn => {
         if (btn.dataset.category === 'all') {
           btn.classList.add('bg-wood-600', 'text-white');
@@ -1646,8 +1691,7 @@ Please contact the customer as soon as possible.`;
         }
       });
       
-      updateDashboardStats();
-      
+      // Hide loading screen
       setTimeout(() => {
         document.getElementById('loading-screen').classList.add('hidden');
         document.getElementById('main-content').classList.remove('hidden');
