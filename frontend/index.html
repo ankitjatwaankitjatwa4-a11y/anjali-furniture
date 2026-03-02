@@ -748,7 +748,7 @@
         }
 
         // Add auth token for admin endpoints
-        if (isLoggedIn && (endpoint.includes('requests') || endpoint.includes('products') || endpoint.includes('woods') || endpoint.includes('config'))) {
+        if (isLoggedIn) {
             const token = localStorage.getItem('adminToken');
             if (token) {
                 options.headers['Authorization'] = `Bearer ${token}`;
@@ -1180,8 +1180,8 @@ Please contact the customer as soon as possible.`;
         if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
             isLoggedIn = true;
             // Generate simple token (in production, use proper JWT)
-            const token = btoa(`${username}:${Date.now()}`);
-            localStorage.setItem('adminToken', token);
+            const token = "ANKITJATWA@123";
+              localStorage.setItem('adminToken', token);
             
             errorDiv.classList.add('hidden');
             await loadInitialData(); // Reload data with auth
